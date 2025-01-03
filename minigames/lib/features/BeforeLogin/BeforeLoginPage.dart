@@ -14,18 +14,23 @@ class BeforeLoginPage extends StatelessWidget {
             children: [
               const SizedBox(height: 120), // 120만큼의 여백
 
-              const Text(
-                '공대생\n터치',
-                style: TextStyle(
-                  fontSize: 50,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              const Center(  // 텍스트도 가운데 정렬
+                child: Text(
+                  'DUMB WAYS\nto be 공머생',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
               ),
-              const SizedBox(height: 20), // 20만큼의 여백
+              const SizedBox(height: 90), // 20만큼의 여백
 
-              // 로그인 버튼
-              LoginButton(),
+              // 로그인 버튼 가운데 정렬
+              Center(
+                child: LoginButton(),
+              ),
             ],
           ),
         ],
