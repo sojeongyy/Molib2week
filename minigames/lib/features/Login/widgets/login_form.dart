@@ -44,7 +44,7 @@ class LoginForm extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 5),
+        const SizedBox(height: 3),
 
         // 회원가입 및 비밀번호 찾기 텍스트
         Row(

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:minigames/core/colors.dart';
 
 class BackgroundImage extends StatelessWidget {
+
+  // const 생성자 추가 (정적 위젯으로 만듦)
+  const BackgroundImage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Stack(

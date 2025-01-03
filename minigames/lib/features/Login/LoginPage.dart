@@ -10,48 +10,57 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: AppColors.almostWhite,
-      body: Stack(
-        children: [
-          // 배경 이미지
-          BackgroundImage(),
+      body: SafeArea( // 노치 디바이스 및 화면 경계 보호
+        child: Stack(
+          children: [
+            // 배경 이미지 (고정)
+            const BackgroundImage(),
 
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 80),
+            // 스크롤 가능하게 수정된 로그인 폼과 텍스트
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 150),
 
-              // 제목 텍스트
-              const Text(
-                'DUMB WAYS\nto be 공머생',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 50, fontWeight: FontWeight.bold, color: Colors.black),
-              ),
-              const SizedBox(height: 10),
+                  // 제목 텍스트
+                  const Text(
+                    'DUMB WAYS\nto be 공머생',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 50, fontWeight: FontWeight.bold, color: Colors.black),
+                  ),
+                  const SizedBox(height: 10),
 
-              // 로그인 폼
-              LoginForm(
-                idController: idController,
-                passwordController: passwordController,
-              ),
-              const SizedBox(height: 20), // 20만큼의 여백
+                  // 로그인 폼 (아이디/비밀번호 입력)
+                  LoginForm(
+                    idController: idController,
+                    passwordController: passwordController,
+                  ),
+                  const SizedBox(height: 20),
 
-            ],
-          ),
-          // 캐릭터 이미지 (Positioned 사용)
-          Positioned(
-            bottom: 10,  // 화면 하단에서 10px 위
-            //left: 100,
-            child: Center(
-              child: Image.asset(
-                'assets/images/blue_person.png',
-                width: 150,
+                  Image.asset(
+                    'assets/images/kakao_login.png',
+                    width: 300,
+                  ),
+                  //const SizedBox(height: 20),
+                ],
               ),
             ),
-          ),
-        ]
-      )
+
+            // 캐릭터 이미지 (하단 중앙 고정)
+            Align(
+              alignment: Alignment.bottomCenter, // 하단 중앙에 고정
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Image.asset(
+                  'assets/images/blue_person.png',
+                  width: 150,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
