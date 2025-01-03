@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minigames/features/Login/LoginPage.dart';
 import '../../../core/colors.dart';
 
 class LoginButton extends StatelessWidget {
@@ -8,6 +9,11 @@ class LoginButton extends StatelessWidget {
 
       onPressed: () {
         print("로그인 버튼 클릭");
+        // LoginPage로 이동
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()), // 직접 페이지 지정
+        );
       },
 
       style: ElevatedButton.styleFrom(
