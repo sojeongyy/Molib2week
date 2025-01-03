@@ -44,3 +44,6 @@
 
 # Backend node_modules
 /backend/app/node_modules/
+
+# Keystore files
+/keystore/*.keystore
