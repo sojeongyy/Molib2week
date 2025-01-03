@@ -1,0 +1,46 @@
+# Miscellaneous
+/minigames/*.class
+/minigames/*.log
+/minigames/*.pyc
+/minigames/*.swp
+/minigames/.DS_Store
+/minigames/.atom/
+/minigames/.buildlog/
+/minigames/.history
+/minigames/.svn/
+/minigames/migrate_working_dir/
+
+# IntelliJ related
+/minigames/*.iml
+/minigames/*.ipr
+/minigames/*.iws
+.idea/
+/minigames/.idea/
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+/minigames/.dart_tool/
+/minigames/.flutter-plugins
+/minigames/.flutter-plugins-dependencies
+/minigames/.pub-cache/
+/minigames/.pub/
+/minigames/build/
+
+# Symbolication related
+/minigames/app.*.symbols
+
+# Obfuscation related
+/minigames/app.*.map.json
+
+# Android Studio will place build artifacts here
+/minigames/android/app/debug
+/minigames/android/app/profile
+/minigames/android/app/release
+
+# Backend node_modules
+/backend/app/node_modules/
