@@ -66,6 +66,7 @@ flutter:
     - assets/images/brown_person.png
     - assets/images/green_person.png
     - assets/images/yellow_person.png
+    - assets/images/kakao_login.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
