@@ -5,18 +5,33 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+def getEnvValue(String key) {
+    //def envFile = rootProject.file(".env") // 최상위 디렉터리에서 .env 파일 찾기
+    def envFile = new File(rootProject.projectDir.parent, ".env")
+    if (envFile.exists()) {
+        println "found env: ${envFile.absolutePath}"
+        def env = new Properties()
+        env.load(new FileInputStream(envFile))
+        return env.getProperty(key)
+    } else {
+        println "env not found!: ${envFile.absolutePath}"
+    }
+    return null
+}
+
+
 android {
     namespace = "com.example.minigames"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = JavaVersion.VERSION_17
     }
 
     defaultConfig {
@@ -24,10 +39,24 @@ android {
         applicationId = "com.example.minigames"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = flutter.minSdkVersion // 이거 21로 바꾸는거 고려해보기
+        minSdkVersion 21
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // .env에서 NATIVE_APP_KEY 값을 가져와 BuildConfig에 추가
+        def envValue = getEnvValue("NATIVE_APP_KEY")
+        buildConfigField "String", "NATIVE_APP_KEY", "\"${envValue}\"" // BuildConfig에 추가
+
+        // AndroidManifest.xml에 값을 전달
+        manifestPlaceholders = [
+                NATIVE_APP_KEY: envValue
+        ]
+    }
+
+    buildFeatures {
+        buildConfig true // buildConfig 기능 활성화
     }
 
     buildTypes {

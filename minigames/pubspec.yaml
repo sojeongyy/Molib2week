@@ -30,6 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  kakao_flutter_sdk: ^1.9.6
+  flutter_dotenv: ^5.0.2
+  shared_preferences: ^2.0.0
   flutter_svg: ^2.0.16
 
 
@@ -68,6 +71,7 @@ flutter:
     - assets/images/green_person.png
     - assets/images/yellow_person.png
     - assets/images/kakao_login.png
+    - .env
     - assets/vectors/setting.svg
     - assets/vectors/user.svg
 
