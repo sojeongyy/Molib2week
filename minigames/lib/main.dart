@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minigames/features/CoupleGame/CoupleGamePage.dart';
 import 'features/BeforeLogin/BeforeLoginPage.dart';
 import 'core/colors.dart';  // 색상 파일 임포트
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       ),
 
       // 첫 화면 지정
-      home: BeforeLoginPage(),
+      home: CoupleGamePage(),
     );
   }
 }

@@ -68,8 +68,15 @@ flutter:
     - assets/images/green_person.png
     - assets/images/yellow_person.png
     - assets/images/kakao_login.png
+    - assets/images/pink_person.png
+    - assets/images/blue_think.png
+    - assets/images/green_think.png
+    - assets/images/yellow_think.png
+    - assets/images/brown_think.png
+    - assets/images/incorrect_think.png
     - assets/vectors/setting.svg
     - assets/vectors/user.svg
+    - assets/vectors/heart.svg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
