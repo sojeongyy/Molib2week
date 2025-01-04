@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minigames/core/colors.dart';
 
 class LoginForm extends StatelessWidget {
   final TextEditingController idController;
@@ -23,6 +24,7 @@ class LoginForm extends StatelessWidget {
               hintText: '아이디',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide(color: AppColors.hardBlue, width: 2),
               ),
             ),
           ),
@@ -39,19 +41,20 @@ class LoginForm extends StatelessWidget {
               hintText: '비밀번호',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide(color: AppColors.hardBlue, width: 2),
               ),
             ),
           ),
         ),
 
-        const SizedBox(height: 3),
-
         // 회원가입 및 비밀번호 찾기 텍스트
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            TextButton(onPressed: () {}, child: const Text('회원가입')),
-            TextButton(onPressed: () {}, child: const Text('아이디/비밀번호 찾기')),
+            TextButton(onPressed: () {},
+                style: TextButton.styleFrom(foregroundColor: Colors.black), child: const Text('회원가입')),
+            TextButton(onPressed: () {},
+                style: TextButton.styleFrom(foregroundColor: Colors.black), child: const Text('아이디/비밀번호 찾기')),
           ],
         ),
       ],

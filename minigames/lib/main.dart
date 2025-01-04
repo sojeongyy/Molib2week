@@ -27,8 +27,9 @@ class MyApp extends StatelessWidget {
 
       // 앱 전체 테마 설정 (app_colors.dart 활용)
       theme: ThemeData(
-        primaryColor: AppColors.softBlue, // 기본 색상 설정
-        scaffoldBackgroundColor: AppColors.almostWhite, // 배경색
+        primaryColor: AppColors.softBlue,  // 기본 색상 설정
+        scaffoldBackgroundColor: AppColors.almostWhite,  // 배경색
+        fontFamily: 'Inter-24pt-Black', // 기본 폰트 설정
         textTheme: const TextTheme(
           bodyLarge: TextStyle(color: Colors.black),
         ),

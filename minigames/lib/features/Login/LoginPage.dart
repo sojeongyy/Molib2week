@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minigames/core/colors.dart';
+import 'widgets/login_button.dart';
 import 'widgets/login_form.dart';
 import 'widgets/background_image.dart';
 import 'widgets/kakao_login_button.dart';
@@ -40,8 +41,18 @@ class LoginPage extends StatelessWidget {
                     idController: idController,
                     passwordController: passwordController,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
 
+                  LoginButton(
+                    // onPressed: () {
+                    //   print('로그인 버튼 클릭됨!');
+                    // },
+                    //   Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(builder: (context) => LoginPage()), // 직접 페이지 지정
+                    //   );
+                  ),
+                  const SizedBox(height: 10),
                   // 카카오 로그인 버튼
                   const KakaoLoginButton(),
                   //const SizedBox(height: 20),
