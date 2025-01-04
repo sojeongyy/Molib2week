@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: AppColors.softBlue,  // 기본 색상 설정
         scaffoldBackgroundColor: AppColors.almostWhite,  // 배경색
+        fontFamily: 'Inter-24pt-Black', // 기본 폰트 설정
         textTheme: const TextTheme(
           bodyLarge: TextStyle(color: Colors.black),
         ),
