@@ -12,6 +12,7 @@ class Scoreboard extends StatelessWidget {
     final topScores = (scores..sort((a, b) => b.compareTo(a))).take(3).toList();
 
     return Container(
+      width: 320,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppColors.beige,
@@ -22,7 +23,8 @@ class Scoreboard extends StatelessWidget {
         children: [
           // 타이틀 : SCOREBOARD
           Container(
-            padding: const EdgeInsets.all(10),
+            width: 300,
+            padding: const EdgeInsets.all(10), // 내부 여백 추가
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
@@ -43,6 +45,7 @@ class Scoreboard extends StatelessWidget {
           // 정확히 3등분하는 상자
           Container(
             height: 171,
+            width: 300,
             padding: const EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
               color: Colors.white,

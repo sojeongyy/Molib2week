@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'widgets/scoreboard.dart';
 import '../Login/widgets/background_image.dart';
 import '../../core/colors.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -31,20 +31,54 @@ class MyApp extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.softBlue, // 버튼 색상
-                        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20), // 버튼 내부 여백
+                        padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 15), // 버튼 내부 여백
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                       ),
                       child: const Text(
                         'PLAY',
                         style: TextStyle(
-                          fontSize: 40,
+                          fontSize: 35,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.almostWhite,
+                          color: Colors.white,
                         ),
                       ),
                     ),
                   ],
                 ),
+              ),
+            ),
+            Positioned(
+              bottom: 10, // 화면 하단에서 20px 위에 위치
+              left: 30,
+              child: Image.asset(
+                'assets/images/brown_person.png',
+                width: 150, // 이미지 크기
+              ),
+            ),
+            Positioned(
+              bottom: 20, // 화면 하단에서 20px 위에 위치
+              right: 30,
+              child: Image.asset(
+                'assets/images/yellow_person.png',
+                width: 150, // 이미지 크기
+              ),
+            ),
+
+            // ✅ 오른쪽 상단 벡터 이미지 추가
+            Positioned(
+              top: 20, // 화면 상단에서 20px 아래
+              right: 70, // 오른쪽에서 70px 떨어진 위치
+              child: SvgPicture.asset(
+                'assets/vectors/user.svg', // 첫 번째 벡터 이미지
+                width: 40,
+              ),
+            ),
+            Positioned(
+              top: 20,
+              right: 20, // 오른쪽에서 20px 떨어진 위치
+              child: SvgPicture.asset(
+                'assets/vectors/setting.svg', // 두 번째 벡터 이미지
+                width: 40,
               ),
             ),
           ],

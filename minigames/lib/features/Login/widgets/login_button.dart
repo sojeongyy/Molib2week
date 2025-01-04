@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/colors.dart';
+import 'package:minigames/features/Home/HomePage.dart';
 
 class LoginButton extends StatelessWidget {
-  final VoidCallback onPressed; // 버튼 클릭 시 수행할 액션
+  //final VoidCallback onPressed; // 버튼 클릭 시 수행할 액션
 
-  const LoginButton({super.key, required this.onPressed});
+  //const LoginButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,14 @@ class LoginButton extends StatelessWidget {
       width: 300, // 버튼 너비 고정
       height: 50,
       child: ElevatedButton(
-        onPressed: onPressed, // 외부에서 전달된 onPressed 사용
+        onPressed: () {
+          print("로그인 버튼 클릭");
+          // LoginPage로 이동
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()), // 직접 페이지 지정
+          );
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.softBlue,
           //padding: const EdgeInsets.symmetric(vertical: 15),

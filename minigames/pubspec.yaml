@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_svg: ^2.0.16
 
 
 
@@ -67,6 +68,8 @@ flutter:
     - assets/images/green_person.png
     - assets/images/yellow_person.png
     - assets/images/kakao_login.png
+    - assets/vectors/setting.svg
+    - assets/vectors/user.svg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
