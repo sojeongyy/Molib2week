@@ -7,6 +7,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 초기화
   await dotenv.load(); // .env 파일 로드
+  try {
+    await dotenv.load(fileName: ".env"); // 기본적으로 루트 디렉토리에서 찾음
+  } catch (e) {
+    print("Error loading .env file: $e");
+  }
   KakaoSdk.init(nativeAppKey: dotenv.env['NATIVE_APP_KEY']!);
   runApp(const MyApp());
 }
