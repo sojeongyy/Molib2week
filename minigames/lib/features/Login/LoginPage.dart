@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minigames/core/colors.dart';
+import 'widgets/login_button.dart';
 import 'widgets/login_form.dart';
 import 'widgets/background_image.dart';
 
@@ -36,8 +37,14 @@ class LoginPage extends StatelessWidget {
                     idController: idController,
                     passwordController: passwordController,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
 
+                  LoginButton(
+                    onPressed: () {
+                      print('로그인 버튼 클릭됨!');
+                    },
+                  ),
+                  const SizedBox(height: 10),
                   Image.asset(
                     'assets/images/kakao_login.png',
                     width: 300,
