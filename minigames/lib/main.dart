@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'features/BeforeLogin/BeforeLoginPage.dart';
 import 'core/colors.dart'; // 색상 파일 임포트
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart'; // 카카오 SDK 임포트
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  KakaoSdk.init(
-    nativeAppKey: 'YOUR_NATIVE_APP_KEY', // 추후수정
-  );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Flutter 초기화
+  await dotenv.load(); // .env 파일 로드
+  KakaoSdk.init(nativeAppKey: dotenv.env['NATIVE_APP_KEY']!);
   runApp(const MyApp());
 }
 

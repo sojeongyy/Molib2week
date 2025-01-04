@@ -47,3 +47,4 @@
 
 # Keystore files
 /keystore/*.keystore
+minigames/.env
