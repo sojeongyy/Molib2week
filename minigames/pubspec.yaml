@@ -40,6 +40,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  audioplayers: ^5.2.0
 
 dev_dependencies:
   flutter_test:
@@ -72,8 +73,17 @@ flutter:
     - assets/images/yellow_person.png
     - assets/images/kakao_login.png
     - .env
+    - assets/images/pink_person.png
+    - assets/images/blue_think.png
+    - assets/images/green_think.png
+    - assets/images/yellow_think.png
+    - assets/images/brown_think.png
+    - assets/images/incorrect_think.png
+
     - assets/vectors/setting.svg
     - assets/vectors/user.svg
+    - assets/vectors/heart.svg
+    - assets/audios/Background.mp3
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
