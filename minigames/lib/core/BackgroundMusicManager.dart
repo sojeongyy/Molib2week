@@ -1,30 +1,50 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
-class BackgroundMusicManager {
-  static final AssetsAudioPlayer _assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
+class BackgroundMusicPage extends StatefulWidget {
+  const BackgroundMusicPage({super.key});
 
-  /// ✅ 배경 음악 초기화 및 재생
-  static void startBackgroundMusic() {
-    _assetsAudioPlayer.open(
-      Audio("assets/audios/music.mp3"),
-      loopMode: LoopMode.single, // 반복 재생
-      autoStart: true,           // 자동 시작
-      showNotification: false,   // 알림 표시 안 함
-    );
+  @override
+  State<BackgroundMusicPage> createState() => _BackgroundMusicPageState();
+}
+
+class _BackgroundMusicPageState extends State<BackgroundMusicPage> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  @override
+  void initState() {
+    super.initState();
+    _playBackgroundMusic();  // 앱 실행 시 배경음악 재생
   }
 
-  /// ✅ 음악 재생
-  static void playMusic() {
-    _assetsAudioPlayer.play();
+  // 배경음악 반복 재생
+  void _playBackgroundMusic() async {
+    await _audioPlayer.setSource(AssetSource('../../assets/audios/Background.mp3'));
+    _audioPlayer.setReleaseMode(ReleaseMode.loop);  // 반복 재생 모드 설정
+    _audioPlayer.play(AssetSource('../../assets/audios/Background.mp3'));
   }
 
-  /// ✅ 음악 일시 정지
-  static void pauseMusic() {
-    _assetsAudioPlayer.pause();
+  @override
+  void dispose() {
+    _audioPlayer.dispose();  // 앱 종료 시 메모리 해제
+    super.dispose();
   }
 
-  /// ✅ 음악 정지
-  static void stopMusic() {
-    _assetsAudioPlayer.stop();
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     body: Center(
+  //       child: Text(
+  //         '배경음악이 반복 재생 중입니다!',
+  //         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

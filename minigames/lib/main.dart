@@ -1,21 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:minigames/features/CoupleGame/CoupleGamePage.dart';
+import 'package:audioplayers/audioplayers.dart';  // 오디오플레이어 임포트
 import 'features/BeforeLogin/BeforeLoginPage.dart';
 import 'core/colors.dart';  // 색상 파일 임포트
-import 'core/BackgroundMusicManager.dart'; // 배경 음악 매니저 불러오기
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final AudioPlayer _audioPlayer = AudioPlayer();  // 오디오플레이어 인스턴스 생성
+
+  @override
+  void initState() {
+    super.initState();
+    _playBackgroundMusic(); // 앱 시작 시 배경음악 재생
+  }
+
+  void _playBackgroundMusic() async {
+    await _audioPlayer.setSource(AssetSource('audios/Background.mp3'));
+    _audioPlayer.setReleaseMode(ReleaseMode.loop);  // 반복 재생
+    _audioPlayer.play(AssetSource('audios/Background.mp3'));
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose(); // 메모리 해제
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-
-    BackgroundMusicManager.startBackgroundMusic();
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,  // 디버그 배너 제거
       title: '공대생 터치!',
@@ -30,8 +52,8 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-      // 첫 화면 지정
-      home: CoupleGamePage(),
+      // 첫 화면 설정
+      home: const CoupleGamePage(),
     );
   }
 }
