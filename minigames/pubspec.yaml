@@ -79,6 +79,10 @@ flutter:
     - assets/images/yellow_think.png
     - assets/images/brown_think.png
     - assets/images/incorrect_think.png
+    - assets/images/professor.png
+    - assets/images/computer.png
+    - assets/images/tear.png
+    - assets/images/cryingperson.png
 
     - assets/vectors/setting.svg
     - assets/vectors/user.svg

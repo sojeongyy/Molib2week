@@ -6,6 +6,8 @@ import 'core/colors.dart'; // 색상 파일 임포트
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart'; // 카카오 SDK 임포트
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'features/RunGame/RunGamePage.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 초기화
   await dotenv.load(); // .env 파일 로드
@@ -63,7 +65,7 @@ class _MyAppState extends State<MyApp> {
       ),
 
       // 첫 화면 설정
-      home: const CoupleGamePage(),
+      home: RunGamePage(),
     );
   }
 }
