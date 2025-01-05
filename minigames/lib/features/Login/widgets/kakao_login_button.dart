@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:minigames/features/Home/HomePage.dart';
 
 class KakaoLoginButton extends StatelessWidget {
   const KakaoLoginButton({Key? key}) : super(key: key);
@@ -23,6 +24,14 @@ class KakaoLoginButton extends StatelessWidget {
       print('사용자 닉네임: $nickname');
       print('프로필 사진 URL: $profileImageUrl');
       print('카카오 고유 ID: $kakaoId');
+
+      // 홈 페이지로 이동
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(nickname: nickname ?? "사용자"),
+        ),
+      );
     } catch (error) {
       print('카카오 로그인 실패: $error');
       // 실패 메시지를 사용자에게 표시

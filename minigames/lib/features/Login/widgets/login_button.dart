@@ -19,7 +19,7 @@ class LoginButton extends StatelessWidget {
           // LoginPage로 이동
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => HomePage()), // 직접 페이지 지정
+            MaterialPageRoute(builder: (context) => HomePage(nickname: "사용자")), // 직접 페이지 지정
           );
         },
         style: ElevatedButton.styleFrom(
