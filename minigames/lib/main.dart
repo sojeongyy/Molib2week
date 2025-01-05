@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minigames/features/CoupleGame/CoupleGamePage.dart';
 import 'features/BeforeLogin/BeforeLoginPage.dart';
 import 'core/colors.dart';  // 색상 파일 임포트
+import 'core/BackgroundMusicManager.dart'; // 배경 음악 매니저 불러오기
 
 void main() {
   runApp(const MyApp());
@@ -12,6 +13,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    BackgroundMusicManager.startBackgroundMusic();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,  // 디버그 배너 제거
       title: '공대생 터치!',

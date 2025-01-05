@@ -45,10 +45,10 @@ class _CorrectPageState extends State<CorrectPage> with SingleTickerProviderStat
                 // ✅ 두근거리는 하트 애니메이션 적용
                 ScaleTransition(
                   scale: _scaleAnimation,
-                  child: SvgPicture.asset('assets/vectors/heart.svg', width: 80),
+                  child: SvgPicture.asset('assets/vectors/heart.svg', width: 130),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
 
                 // ✅ 여자 캐릭터 (좌우 반전) + 정답 캐릭터 (동적으로 표시)
                 Row(
@@ -66,11 +66,6 @@ class _CorrectPageState extends State<CorrectPage> with SingleTickerProviderStat
                   ],
                 ),
 
-                const SizedBox(height: 20),
-                const Text(
-                  '정답입니다! 🎉',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.green),
-                ),
 
                 const SizedBox(height: 20),
                 ElevatedButton(
