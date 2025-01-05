@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'CorrectPage.dart';
 import 'InCorrectPage.dart';
+import '../../core/navigation_helper.dart';
 
 class CoupleGamePage extends StatefulWidget {
   const CoupleGamePage({super.key});
@@ -28,6 +29,7 @@ class _CoupleGamePageState extends State<CoupleGamePage> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     String targetCharacter = getTargetCharacter(); // 정답 캐릭터 업데이트
@@ -50,32 +52,20 @@ class _CoupleGamePageState extends State<CoupleGamePage> {
                   // 중앙 캐릭터 (DragTarget)
                   DragTarget<String>(
                     onAccept: (data) {
-                      setState(() {
-                        if (data == targetCharacter) {
-                          isCorrect = true;
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CorrectPage(correctCharacter: targetCharacter),
-                            ),
-                          );
-                        } else {
-                          // 정답이 틀린 경우, InCorrectPage로 이동
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const InCorrectPage()),
-                          );
-                        }
-                      });
+                      if (data == targetCharacter) {
+                        navigateWithFade(context, CorrectPage(correctCharacter: targetCharacter));
+                      } else {
+                        navigateWithFade(context, const InCorrectPage());
+                      }
                     },
                     builder: (context, candidateData, rejectedData) {
                       return Column(
                         children: [
                           Image.asset('assets/images/pink_person.png', width: 150),
                           const SizedBox(height: 10),
-                          isCorrect
-                              ? const Text("정답!", style: TextStyle(fontSize: 30, color: Colors.green))
-                              : const Text("캐릭터를 가져와 보세요!", style: TextStyle(fontSize: 20)),
+                          // isCorrect
+                          //     ? const Text("정답!", style: TextStyle(fontSize: 30, color: Colors.green))
+                          //     : const Text("캐릭터를 가져와 보세요!", style: TextStyle(fontSize: 20)),
                         ],
                       );
                     },
