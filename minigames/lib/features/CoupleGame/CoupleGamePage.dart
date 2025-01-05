@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/Timer.dart';
 import 'CorrectPage.dart';
 import 'InCorrectPage.dart';
 import '../../core/navigation_helper.dart';
@@ -11,10 +12,38 @@ class CoupleGamePage extends StatefulWidget {
   State<CoupleGamePage> createState() => _CoupleGamePageState();
 }
 
-class _CoupleGamePageState extends State<CoupleGamePage> {
+class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProviderStateMixin {
   // 현재 말풍선과 정답 캐릭터
   String speechBubbleImage = 'assets/images/green_think.png';
   bool isCorrect = false;
+  late TimerManager timerManager;
+
+  @override
+  void initState() {
+    super.initState();
+    timerManager = TimerManager(
+      context: context,
+      duration: 5,
+      controller: AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: 16),
+      ),
+      onComplete: () {
+        navigateWithFade(context, const InCorrectPage());
+      },
+      onUpdate: (timeLeft) {
+        setState(() {});  // 안전한 UI 업데이트
+      },
+    );
+
+    timerManager.startTimer();
+  }
+
+  @override
+  void dispose() {
+    timerManager.cancelTimer();
+    super.dispose();
+  }
 
   // 정답 캐릭터 결정 (말풍선에 따라)
   String getTargetCharacter() {
@@ -34,12 +63,15 @@ class _CoupleGamePageState extends State<CoupleGamePage> {
   Widget build(BuildContext context) {
     String targetCharacter = getTargetCharacter(); // 정답 캐릭터 업데이트
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, // 디버그 배너 제거
-      home: Scaffold(
+    return Scaffold(
         backgroundColor: const Color(0xFFFFE1FB), // 배경색
         body: Stack(
           children: [
+            Positioned(
+              top: 20,
+              left: 20,
+              child: buildProgressBar(timerManager.timeLeft, timerManager.duration),
+            ),
             // ✅ 중앙 캐릭터와 말풍선 (정답에 따른 말풍선 변경)
             Center(
               child: Column(
@@ -63,9 +95,6 @@ class _CoupleGamePageState extends State<CoupleGamePage> {
                         children: [
                           Image.asset('assets/images/pink_person.png', width: 150),
                           const SizedBox(height: 10),
-                          // isCorrect
-                          //     ? const Text("정답!", style: TextStyle(fontSize: 30, color: Colors.green))
-                          //     : const Text("캐릭터를 가져와 보세요!", style: TextStyle(fontSize: 20)),
                         ],
                       );
                     },
@@ -149,7 +178,6 @@ class _CoupleGamePageState extends State<CoupleGamePage> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

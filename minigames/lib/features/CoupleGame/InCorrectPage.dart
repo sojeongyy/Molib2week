@@ -5,9 +5,7 @@ class InCorrectPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, // 디버그 배너 제거
-      home: Scaffold(
+    return Scaffold(
         backgroundColor: const Color(0xFFFFE1FB), // 배경색
         body: Stack(
           children: [
@@ -54,7 +52,6 @@ class InCorrectPage extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }

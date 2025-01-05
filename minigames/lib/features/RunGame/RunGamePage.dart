@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math';
-
 import 'package:minigames/features/RunGame/CollisionPage.dart';
-
-import '../../core/colors.dart';
+import 'package:minigames/features/RunGame/NotCollisionPage.dart';
+import '../../core/Timer.dart';
 
 class RunGamePage extends StatefulWidget {
   @override
@@ -17,15 +16,12 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
   double playerX = 200;
   double playerY = 400;
   final double blue_person_width = 100;
-  // final double blue_person_height = 100;
   final double professor_width = 180;
-  // final double professor_height = 180;
   bool isGameOver = false;
   late AnimationController _controller;
+  late TimerManager timerManager;
   double speed = 300;
   int gameDuration = 5;
-  late Timer _successTimer;
-  double timeLeft = 5;
 
   @override
   void initState() {
@@ -38,17 +34,11 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
     });
     _controller.repeat();
 
-    startTimer(gameDuration);
-  }
-
-  void startTimer(int duration) {
-    timeLeft = duration.toDouble();
-    _successTimer = Timer.periodic(Duration(milliseconds: 100), (timer) {
-      if (timeLeft > 0) {
-        setState(() {
-          timeLeft -= 0.1;
-        });
-      } else {
+    timerManager = TimerManager(
+      context: context,
+      duration: gameDuration,
+      controller: _controller,
+      onComplete: () {
         if (!isGameOver) {
           setState(() {
             isGameOver = true;
@@ -56,23 +46,16 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
           });
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => SuccessPage()),
+            MaterialPageRoute(builder: (context) => NotCollisionPage()),
           );
         }
-        timer.cancel();
-      }
-    });
-  }
-
-  Widget buildProgressBar() {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 100),
-      width: max(1, MediaQuery.of(context).size.width * (1 - (timeLeft / gameDuration))),
-      height: 5,
-      decoration: BoxDecoration(
-        color: AppColors.softBlue,
-      ),
+      },
+      onUpdate: (timeLeft) {
+        setState(() {});
+      },
     );
+
+    timerManager.startTimer();
   }
 
   void moveProfessorTowardsPlayer() {
@@ -101,7 +84,7 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
       setState(() {
         isGameOver = true;
         _controller.stop();
-        _successTimer.cancel();
+        timerManager.cancelTimer();
       });
       Navigator.pushReplacement(
         context,
@@ -116,7 +99,11 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
       backgroundColor: const Color(0xFFFF6464),
       body: Stack(
         children: [
-          Positioned(top: 20, left: 0, child: buildProgressBar()),
+          Positioned(
+            top: 20,
+            left: 0,
+            child: buildProgressBar(timerManager.timeLeft, gameDuration),
+          ),
           Positioned(
             top: professorY,
             left: professorX,
@@ -149,7 +136,7 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
   @override
   void dispose() {
     _controller.dispose();
-    _successTimer.cancel();
+    timerManager.cancelTimer();
     super.dispose();
   }
 }

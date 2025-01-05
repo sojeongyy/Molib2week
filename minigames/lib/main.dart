@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minigames/features/CoupleGame/CoupleGamePage.dart';
 import 'package:audioplayers/audioplayers.dart';  // 오디오플레이어 임포트
+import 'package:minigames/features/RunGame/NotCollisionPage.dart';
 import 'features/BeforeLogin/BeforeLoginPage.dart';
 import 'core/colors.dart'; // 색상 파일 임포트
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart'; // 카카오 SDK 임포트
@@ -65,7 +66,7 @@ class _MyAppState extends State<MyApp> {
       ),
 
       // 첫 화면 설정
-      home: RunGamePage(),
+      home: NotCollisionPage(),
     );
   }
 }
