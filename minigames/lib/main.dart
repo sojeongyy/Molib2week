@@ -67,7 +67,7 @@ class _MyAppState extends State<MyApp> {
       ),
 
       // 첫 화면 설정
-      home: BugGamePage(level: 1),
+      home: BeforeLoginPage(),
     );
   }
 }
