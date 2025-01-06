@@ -83,6 +83,12 @@ flutter:
     - assets/images/computer.png
     - assets/images/tear.png
     - assets/images/cryingperson.png
+    - assets/images/bug.png
+    - assets/images/bug_computer.png
+    - assets/images/deadbug.png
+    - assets/images/bugTalking.png
+    - assets/images/blueScreen.png
+    - assets/images/bugFuck.png
 
     - assets/vectors/setting.svg
     - assets/vectors/user.svg

@@ -7,6 +7,7 @@ import 'core/colors.dart'; // 색상 파일 임포트
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart'; // 카카오 SDK 임포트
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'features/BugGame/BugGamePage.dart';
 import 'features/RunGame/RunGamePage.dart';
 
 void main() async {
@@ -66,7 +67,7 @@ class _MyAppState extends State<MyApp> {
       ),
 
       // 첫 화면 설정
-      home: BeforeLoginPage(),
+      home: BugGamePage(level: 1),
     );
   }
 }

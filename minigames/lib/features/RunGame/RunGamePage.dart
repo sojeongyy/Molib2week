@@ -46,18 +46,12 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
       controller: _controller,
       onComplete: () {
         if (!isGameOver && mounted) {
-          setState(() {
-            isGameOver = true;
-            _controller.stop();
-          });
-          Future.delayed(const Duration(seconds: 1), () {
-            if (mounted) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => NotCollisionPage(level: widget.level)),
-              );
-            }
-          });
+          isGameOver = true;  // 게임 종료 상태 플래그 업데이트
+          _controller.stop(); // 애니메이션 멈춤
+          Navigator.pushReplacement( // ✅ 바로 다음 페이지로 이동
+            context,
+            MaterialPageRoute(builder: (context) => NotCollisionPage(level: widget.level)),
+          );
         }
       },
       onUpdate: (timeLeft) {
@@ -96,14 +90,11 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
         _controller.stop();
         timerManager.cancelTimer();
       });
-      Future.delayed(const Duration(seconds: 1), () {
-        if (mounted) { // ✅ context.mounted 체크 추가
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => CollisionPage()),
-          );
-        }
-      });
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => CollisionPage()),
+      );
+
     }
   }
 
