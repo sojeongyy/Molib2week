@@ -3,6 +3,11 @@ import '../Login/widgets/background_image.dart';
 import '../../core/colors.dart';
 
 class NotCollisionPage extends StatefulWidget {
+
+  final VoidCallback onSuccess;
+
+  const NotCollisionPage({super.key, required this.onSuccess});
+
   @override
   _NotCollisionPageState createState() => _NotCollisionPageState();
 }
@@ -11,10 +16,12 @@ class _NotCollisionPageState extends State<NotCollisionPage> with SingleTickerPr
   double blueCharacterY = 400; // Initial Y position for the blue character
   double blueCharacterX = 200; // Initial X position for the blue character
   late AnimationController _animationController;
+  late Future<void> _delayedTransition;
 
   @override
   void initState() {
-    super.initState();
+
+    super.initState(); // ✅ 상태 초기화
 
     // Initialize the character to start from the center of the screen
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -35,6 +42,13 @@ class _NotCollisionPageState extends State<NotCollisionPage> with SingleTickerPr
 
     // Start the downward movement immediately
     _animationController.repeat(reverse: false);
+
+    // ✅ 위젯이 mounted 상태인지 확인하고 호출
+    _delayedTransition = Future.delayed(const Duration(seconds: 1), () {
+      if (mounted) {
+        widget.onSuccess();
+      }
+    });
   }
 
   @override
@@ -45,6 +59,7 @@ class _NotCollisionPageState extends State<NotCollisionPage> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Stack(
         children: [

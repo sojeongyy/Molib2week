@@ -1,29 +1,65 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../CoupleGame/CorrectPage.dart';
+import '../RoundPage.dart';
+import '../RunGame/NotCollisionPage.dart';
 import 'widgets/scoreboard.dart';
 import '../Login/widgets/background_image.dart';
 import '../../core/colors.dart';
 import '../RunGame/RunGamePage.dart';
 import '../CoupleGame/CoupleGamePage.dart';
 
-void startRandomGame(BuildContext context) {
+// ✅ 게임을 성공 후 RoundPage를 거쳐 랜덤 게임 시작 (mounted 체크 추가)
+void startRandomGame(BuildContext context, int roundNumber) {
   final random = Random().nextBool();
-  if (random) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => CoupleGamePage()),
-    );
-  } else {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => RunGamePage()),
-    );
-  }
+
+  // ✅ mounted 체크를 위한 'context.mounted'
+  if (!context.mounted) return;
+
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) => random
+          ? CoupleGamePage(
+        onGameSuccess: () {
+          if (context.mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RoundPage(
+                  roundNumber: roundNumber + 1,
+                  onRoundComplete: () {
+                    startRandomGame(context, roundNumber + 1);
+                  },
+                ),
+              ),
+            );
+          }
+        },
+      )
+          : RunGamePage(
+        onGameSuccess: () {
+          if (context.mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RoundPage(
+                  roundNumber: roundNumber + 1,
+                  onRoundComplete: () {
+                    startRandomGame(context, roundNumber + 1);
+                  },
+                ),
+              ),
+            );
+          }
+        },
+      ),
+    ),
+  );
 }
 
 class HomePage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,8 +76,9 @@ class HomePage extends StatelessWidget {
                   const SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () {
-                      startRandomGame(context);
-                      print('Play button pressed');
+                      if (context.mounted) {
+                        startRandomGame(context, 1); // ✅ 첫 번째 라운드 시작 (mounted 체크)
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.softBlue,

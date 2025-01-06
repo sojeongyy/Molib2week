@@ -6,6 +6,10 @@ import 'package:minigames/features/RunGame/NotCollisionPage.dart';
 import '../../core/Timer.dart';
 
 class RunGamePage extends StatefulWidget {
+  final VoidCallback onGameSuccess; // ✅ 게임 성공 후 콜백 추가
+
+  const RunGamePage({super.key, required this.onGameSuccess});
+
   @override
   _RunGamePageState createState() => _RunGamePageState();
 }
@@ -22,13 +26,15 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
   late TimerManager timerManager;
   double speed = 300;
   int gameDuration = 5;
+  late Future<void> _delayedTransition; // ✅ 추가
+  bool _isDisposed = false; // ✅ 추가
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 16),
+      duration: const Duration(milliseconds: 16),
     )..addListener(() {
       moveProfessorTowardsPlayer();
     });
@@ -39,19 +45,23 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
       duration: gameDuration,
       controller: _controller,
       onComplete: () {
-        if (!isGameOver) {
+        if (!isGameOver && mounted) {
           setState(() {
             isGameOver = true;
             _controller.stop();
           });
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => NotCollisionPage()),
-          );
+          Future.delayed(const Duration(seconds: 1), () {
+            if (mounted) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => NotCollisionPage(onSuccess: widget.onGameSuccess)),
+              );
+            }
+          });
         }
       },
       onUpdate: (timeLeft) {
-        setState(() {});
+        if (mounted) setState(() {});
       },
     );
 
@@ -86,10 +96,14 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
         _controller.stop();
         timerManager.cancelTimer();
       });
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => CollisionPage()),
-      );
+      Future.delayed(const Duration(seconds: 1), () {
+        if (mounted) { // ✅ context.mounted 체크 추가
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => CollisionPage()),
+          );
+        }
+      });
     }
   }
 
@@ -107,7 +121,7 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
           Positioned(
             top: professorY,
             left: professorX,
-            child: Image.asset('assets/images/professor.png', width: professor_width,),
+            child: Image.asset('assets/images/professor.png', width: professor_width),
           ),
           Positioned(
             top: playerY,
@@ -120,13 +134,13 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
                   checkCollision();
                 });
               },
-              child: Image.asset('assets/images/blue_person.png', width: blue_person_width,),
+              child: Image.asset('assets/images/blue_person.png', width: blue_person_width),
             ),
           ),
           Positioned(
             top: MediaQuery.of(context).size.height * 0.5,
             left: MediaQuery.of(context).size.width / 2 - 100,
-            child: Text('교수님으로부터 run!', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            child: const Text('교수님으로부터 run!', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -135,20 +149,9 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
 
   @override
   void dispose() {
-    _controller.dispose();
-    timerManager.cancelTimer();
+    _isDisposed = true; // ✅ Dispose 상태 체크 추가
+    timerManager.dispose();  // ✅ TimerManager에서 dispose 호출
+    _controller.dispose();  // ✅ 애니메이션 컨트롤러 해제
     super.dispose();
-  }
-}
-
-class SuccessPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Success!')),
-      body: Center(
-        child: Text('축하합니다! 성공하셨습니다!', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-      ),
-    );
   }
 }

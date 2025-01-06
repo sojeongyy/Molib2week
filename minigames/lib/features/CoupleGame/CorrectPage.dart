@@ -3,8 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class CorrectPage extends StatefulWidget {
   final String correctCharacter; // ✅ 정답 캐릭터를 받아오기 위한 매개변수
+  final VoidCallback onSuccess;
 
-  const CorrectPage({super.key, required this.correctCharacter});
+  const CorrectPage({super.key, required this.correctCharacter, required this.onSuccess});
 
   @override
   State<CorrectPage> createState() => _CorrectPageState();
@@ -13,26 +14,38 @@ class CorrectPage extends StatefulWidget {
 class _CorrectPageState extends State<CorrectPage> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
+  late Future<void> _delayedTransition;
 
   @override
   void initState() {
     super.initState();
+
+    // ✅ 두근거리는 하트 애니메이션 적용
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     )..repeat(reverse: true);
 
     _scaleAnimation = Tween<double>(begin: 1.0, end: 1.2).animate(_controller);
+
+    // ✅ mounted 체크 추가 1초 후에 자동으로 RoundPage 로 이동
+    _delayedTransition = Future.delayed(const Duration(seconds: 1), () {
+      if (mounted) {
+        widget.onSuccess();
+      }
+    });
   }
 
   @override
   void dispose() {
+    // ✅ 애니메이션 컨트롤러 해제
     _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFE1FB),
       body: Stack(
@@ -45,7 +58,7 @@ class _CorrectPageState extends State<CorrectPage> with SingleTickerProviderStat
                 // ✅ 두근거리는 하트 애니메이션 적용
                 ScaleTransition(
                   scale: _scaleAnimation,
-                  child: SvgPicture.asset('assets/vectors/heart.svg', width: 130),
+                  child: SvgPicture.asset('assets/vectors/heart.svg', width: 180),
                 ),
 
                 const SizedBox(height: 10),
@@ -67,13 +80,13 @@ class _CorrectPageState extends State<CorrectPage> with SingleTickerProviderStat
                 ),
 
 
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // 이전 화면으로 돌아가기
-                  },
-                  child: const Text('다시 도전하기'),
-                ),
+                // const SizedBox(height: 20),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     Navigator.pop(context); // 이전 화면으로 돌아가기
+                //   },
+                //   child: const Text('다시 도전하기'),
+                // ),
               ],
             ),
           ),

@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
       ),
 
       // 첫 화면 설정
-      home: NotCollisionPage(),
+      home: BeforeLoginPage(),
     );
   }
 }
