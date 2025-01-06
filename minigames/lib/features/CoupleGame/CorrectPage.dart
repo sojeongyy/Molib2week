@@ -5,9 +5,9 @@ import '../../core/NextButton.dart';
 
 class CorrectPage extends StatefulWidget {
   final String correctCharacter; // ✅ 정답 캐릭터를 받아오기 위한 매개변수
-  final VoidCallback onSuccess;
+  final int level;
 
-  const CorrectPage({super.key, required this.correctCharacter, required this.onSuccess});
+  const CorrectPage({super.key, required this.correctCharacter, required this.level});
 
   @override
   State<CorrectPage> createState() => _CorrectPageState();
@@ -30,12 +30,6 @@ class _CorrectPageState extends State<CorrectPage> with SingleTickerProviderStat
 
     _scaleAnimation = Tween<double>(begin: 1.0, end: 1.2).animate(_controller);
 
-    // ✅ mounted 체크 추가 1초 후에 자동으로 RoundPage 로 이동
-    _delayedTransition = Future.delayed(const Duration(seconds: 1), () {
-      if (mounted) {
-        widget.onSuccess();
-      }
-    });
   }
 
   @override
@@ -82,7 +76,7 @@ class _CorrectPageState extends State<CorrectPage> with SingleTickerProviderStat
                 ),
                 const SizedBox(height: 20),
                 Center(
-                  child: NextButton(),
+                  child: NextButton(level: widget.level),
                 ),
 
                 // const SizedBox(height: 20),

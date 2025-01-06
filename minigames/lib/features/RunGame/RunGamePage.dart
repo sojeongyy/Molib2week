@@ -6,9 +6,8 @@ import 'package:minigames/features/RunGame/NotCollisionPage.dart';
 import '../../core/Timer.dart';
 
 class RunGamePage extends StatefulWidget {
-  final VoidCallback onGameSuccess; // ✅ 게임 성공 후 콜백 추가
-
-  const RunGamePage({super.key, required this.onGameSuccess});
+  final int level;
+  const RunGamePage({super.key, required this.level});
 
   @override
   _RunGamePageState createState() => _RunGamePageState();
@@ -32,6 +31,7 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
+    speed += widget.level * 50;
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 16),
@@ -54,7 +54,7 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
             if (mounted) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => NotCollisionPage(onSuccess: widget.onGameSuccess)),
+                MaterialPageRoute(builder: (context) => NotCollisionPage(level: widget.level)),
               );
             }
           });

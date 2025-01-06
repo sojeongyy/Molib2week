@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../CoupleGame/CorrectPage.dart';
-import '../RoundPage.dart';
-import '../RunGame/NotCollisionPage.dart';
 import 'widgets/scoreboard.dart';
 import '../Login/widgets/background_image.dart';
 import '../../core/colors.dart';
@@ -11,7 +8,7 @@ import '../RunGame/RunGamePage.dart';
 import '../CoupleGame/CoupleGamePage.dart';
 
 // ✅ 게임을 성공 후 RoundPage를 거쳐 랜덤 게임 시작 (mounted 체크 추가)
-void startRandomGame(BuildContext context, int roundNumber) {
+void startRandomGame(BuildContext context, int roundNumber, int level) {
   final random = Random().nextBool(); // 랜덤으로 게임 선택
 
   if (!context.mounted) return; // 안전한 context 사용
@@ -20,20 +17,8 @@ void startRandomGame(BuildContext context, int roundNumber) {
     context,
     MaterialPageRoute(
       builder: (context) => random
-          ? CoupleGamePage(
-        onGameSuccess: () {
-          if (context.mounted) {
-            startRandomGame(context, roundNumber + 1); // ✅ 바로 다음 게임 시작
-          }
-        },
-      )
-          : RunGamePage(
-        onGameSuccess: () {
-          if (context.mounted) {
-            startRandomGame(context, roundNumber + 1); // ✅ 바로 다음 게임 시작
-          }
-        },
-      ),
+          ? CoupleGamePage(level: level)
+          : RunGamePage(level: level),
     ),
   );
 }
@@ -56,7 +41,7 @@ class HomePage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       if (context.mounted) {
-                        startRandomGame(context, 1); // ✅ 첫 번째 라운드 시작 (mounted 체크)
+                        startRandomGame(context, 1, 1); // ✅ 첫 번째 라운드 시작 (mounted 체크)
                       }
                     },
                     style: ElevatedButton.styleFrom(

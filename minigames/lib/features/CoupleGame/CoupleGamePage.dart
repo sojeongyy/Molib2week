@@ -4,9 +4,10 @@ import '../../core/Timer.dart';
 import 'CorrectPage.dart';
 
 class CoupleGamePage extends StatefulWidget {
-  final VoidCallback onGameSuccess;
+  // final VoidCallback onGameSuccess;
+  final int level; // 난이도
 
-  const CoupleGamePage({super.key, required this.onGameSuccess});
+  const CoupleGamePage({super.key, required this.level});
 
   @override
   State<CoupleGamePage> createState() => _CoupleGamePageState();
@@ -16,21 +17,49 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
   String speechBubbleImage = 'assets/images/green_think.png';
   late Future<void> _delayedTransition; // ✅ Future 추가 (안전하게 사용)
   late TimerManager timerManager;
-  final int gameDuration = 5;
+  late AnimationController _controller;
+  int gameDuration = 5;
+  bool isGameOver = true;
 
   @override
   void initState() {
     super.initState();
+
+    // ✅ 애니메이션 컨트롤러 초기화
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+
+    // ✅ 난이도에 따라 제한 시간 조정
+    gameDuration -= widget.level * 1;
+    if (gameDuration < 2) gameDuration = 2; // 최소 2초 제한
+
     timerManager = TimerManager(
       context: context,
       duration: gameDuration,
-      controller: AnimationController(vsync: this),
-      onComplete: widget.onGameSuccess,
+      controller: _controller,
       onUpdate: (timeLeft) {
         if (mounted) {
           setState(() {});
         }
       },
+      onComplete: () {
+        if (isGameOver && mounted) {
+          setState(() {
+            isGameOver = false;
+            _controller.stop();
+          });
+          Future.delayed(const Duration(seconds: 1), () {
+            if (mounted) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => InCorrectPage()),
+              );
+            }
+          });
+        }
+    },
     );
     timerManager.startTimer();
   }
@@ -82,7 +111,7 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => CorrectPage(correctCharacter: targetCharacter, onSuccess: widget.onGameSuccess),
+                              builder: (context) => CorrectPage(correctCharacter: targetCharacter, level: widget.level),
                             ),
                           );
                         }

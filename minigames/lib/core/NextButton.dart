@@ -4,13 +4,17 @@ import 'package:minigames/features/Login/LoginPage.dart';
 import '../../../core/colors.dart';
 
 class NextButton extends StatelessWidget {
+
+  final int level;
+  const NextButton({super.key, required this.level});
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
 
       onPressed: () {
         print("next 버튼 클릭");
-        startRandomGame(context, 1);
+        startRandomGame(context, 1, level+1);
       },
 
       style: ElevatedButton.styleFrom(

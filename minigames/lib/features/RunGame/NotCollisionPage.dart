@@ -4,10 +4,8 @@ import '../Login/widgets/background_image.dart';
 import '../../core/colors.dart';
 
 class NotCollisionPage extends StatefulWidget {
-
-  final VoidCallback onSuccess;
-
-  const NotCollisionPage({super.key, required this.onSuccess});
+  final int level;
+  const NotCollisionPage({super.key, required this.level});
 
   @override
   _NotCollisionPageState createState() => _NotCollisionPageState();
@@ -44,12 +42,6 @@ class _NotCollisionPageState extends State<NotCollisionPage> with SingleTickerPr
     // Start the downward movement immediately
     _animationController.repeat(reverse: false);
 
-    // ✅ 위젯이 mounted 상태인지 확인하고 호출
-    _delayedTransition = Future.delayed(const Duration(seconds: 1), () {
-      if (mounted) {
-        widget.onSuccess();
-      }
-    });
   }
 
   @override
@@ -89,7 +81,7 @@ class _NotCollisionPageState extends State<NotCollisionPage> with SingleTickerPr
 
           // 로그인 버튼 가운데 정렬
           Center(
-            child: NextButton(),
+            child: NextButton(level: widget.level),
           ),
         ],
       ),
