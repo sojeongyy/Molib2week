@@ -15,6 +15,31 @@ import '../Login/widgets/background_image.dart';
 import '../RunGame/RunGamePage.dart';
 import '../CoupleGame/CoupleGamePage.dart';
 
+
+// ✅ 게임을 성공 후 RoundPage를 거쳐 랜덤 게임 시작 (mounted 체크 추가)
+void startRandomGame(BuildContext context, int roundNumber, int level) {
+  final randomIndex = Random().nextInt(3); // ✅ 3개의 게임을 랜덤으로 선택 (0, 1, 2)
+
+  // ✅ 기존 페이지를 닫고 랜덤으로 새로운 게임 시작
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) {
+        switch (randomIndex) {
+          case 0:
+            return CoupleGamePage(level: level);
+          case 1:
+            return RunGamePage(level: level);
+          case 2:
+            return BugGamePage(level: level);  // ✅ BugGame 추가
+          default:
+            return CoupleGamePage(level: level); // 기본값 설정
+        }
+      },
+    ),
+  );
+}
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -159,30 +184,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-// ✅ 게임을 성공 후 RoundPage를 거쳐 랜덤 게임 시작 (mounted 체크 추가)
-void startRandomGame(BuildContext context, int roundNumber, int level) {
-  final randomIndex = Random().nextInt(3); // ✅ 3개의 게임을 랜덤으로 선택 (0, 1, 2)
 
-  // ✅ 기존 페이지를 닫고 랜덤으로 새로운 게임 시작
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(
-      builder: (context) {
-        switch (randomIndex) {
-          case 0:
-            return CoupleGamePage(level: level);
-          case 1:
-            return RunGamePage(level: level);
-          case 2:
-            return BugGamePage(level: level);  // ✅ BugGame 추가
-          default:
-            return CoupleGamePage(level: level); // 기본값 설정
-        }
-      },
-    ),
-  );
-}
-class HomePage extends StatelessWidget {
+// class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
