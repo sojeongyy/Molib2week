@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../core/NextButton.dart';
+
 class CorrectPage extends StatefulWidget {
   final String correctCharacter; // ✅ 정답 캐릭터를 받아오기 위한 매개변수
   final VoidCallback onSuccess;
@@ -78,7 +80,10 @@ class _CorrectPageState extends State<CorrectPage> with SingleTickerProviderStat
                     Image.asset(widget.correctCharacter, width: 150),
                   ],
                 ),
-
+                const SizedBox(height: 20),
+                Center(
+                  child: NextButton(),
+                ),
 
                 // const SizedBox(height: 20),
                 // ElevatedButton(

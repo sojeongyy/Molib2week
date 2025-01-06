@@ -12,46 +12,25 @@ import '../CoupleGame/CoupleGamePage.dart';
 
 // ✅ 게임을 성공 후 RoundPage를 거쳐 랜덤 게임 시작 (mounted 체크 추가)
 void startRandomGame(BuildContext context, int roundNumber) {
-  final random = Random().nextBool();
+  final random = Random().nextBool(); // 랜덤으로 게임 선택
 
-  // ✅ mounted 체크를 위한 'context.mounted'
-  if (!context.mounted) return;
+  if (!context.mounted) return; // 안전한 context 사용
 
-  Navigator.pushReplacement(
+  Navigator.pushReplacement( // ✅ 기존 페이지를 닫고 새로운 게임 시작
     context,
     MaterialPageRoute(
       builder: (context) => random
           ? CoupleGamePage(
         onGameSuccess: () {
           if (context.mounted) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => RoundPage(
-                  roundNumber: roundNumber + 1,
-                  onRoundComplete: () {
-                    startRandomGame(context, roundNumber + 1);
-                  },
-                ),
-              ),
-            );
+            startRandomGame(context, roundNumber + 1); // ✅ 바로 다음 게임 시작
           }
         },
       )
           : RunGamePage(
         onGameSuccess: () {
           if (context.mounted) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => RoundPage(
-                  roundNumber: roundNumber + 1,
-                  onRoundComplete: () {
-                    startRandomGame(context, roundNumber + 1);
-                  },
-                ),
-              ),
-            );
+            startRandomGame(context, roundNumber + 1); // ✅ 바로 다음 게임 시작
           }
         },
       ),

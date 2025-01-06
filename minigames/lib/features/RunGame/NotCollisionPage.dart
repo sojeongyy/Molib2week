@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/NextButton.dart';
 import '../Login/widgets/background_image.dart';
 import '../../core/colors.dart';
 
@@ -83,6 +84,12 @@ class _NotCollisionPageState extends State<NotCollisionPage> with SingleTickerPr
               'assets/images/blue_person.png',
               width: 170,
             ),
+          ),
+          const SizedBox(height: 90), // 20만큼의 여백
+
+          // 로그인 버튼 가운데 정렬
+          Center(
+            child: NextButton(),
           ),
         ],
       ),
