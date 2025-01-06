@@ -43,15 +43,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
 
-                  LoginButton(
-                    // onPressed: () {
-                    //   print('로그인 버튼 클릭됨!');
-                    // },
-                    //   Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(builder: (context) => LoginPage()), // 직접 페이지 지정
-                    //   );
-                  ),
+                  LoginButton(),
                   const SizedBox(height: 10),
                   // 카카오 로그인 버튼
                   const KakaoLoginButton(),

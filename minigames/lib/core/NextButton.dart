@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:minigames/features/Home/HomePage.dart';
 import 'package:minigames/features/Login/LoginPage.dart';
 import '../../../core/colors.dart';
 
-class LoginButton extends StatelessWidget {
+class NextButton extends StatelessWidget {
+
+  final int level;
+  const NextButton({super.key, required this.level});
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
 
       onPressed: () {
-        print("로그인 버튼 클릭 - 홈 화면으로 이동");
-        // LoginPage로 이동
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => LoginPage()), // 직접 페이지 지정
-        );
+        print("next 버튼 클릭");
+        startRandomGame(context, 1, level+1);
       },
 
       style: ElevatedButton.styleFrom(
@@ -25,7 +27,7 @@ class LoginButton extends StatelessWidget {
         ),
       ),
       child: const Text(
-        'login',
+        'Next',
         style: TextStyle(fontSize: 32, color: AppColors.almostWhite),
       ),
     );
