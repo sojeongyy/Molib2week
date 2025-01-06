@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../core/ScoreManager.dart';
 import '../BugGame/BugGamePage.dart';
 import 'widgets/scoreboard.dart';
 import '../Login/widgets/background_image.dart';
 import '../../core/colors.dart';
 import '../RunGame/RunGamePage.dart';
 import '../CoupleGame/CoupleGamePage.dart';
+
+final ScoreManager scoreManager = ScoreManager();
+
 
 // ✅ 게임을 성공 후 RoundPage를 거쳐 랜덤 게임 시작 (mounted 체크 추가)
 void startRandomGame(BuildContext context, int roundNumber, int level) {
@@ -19,13 +23,13 @@ void startRandomGame(BuildContext context, int roundNumber, int level) {
       builder: (context) {
         switch (randomIndex) {
           case 0:
-            return CoupleGamePage(level: level);
+            return CoupleGamePage(level: roundNumber, scoreManager: scoreManager);
           case 1:
-            return RunGamePage(level: level);
+            return RunGamePage(level: roundNumber, scoreManager: scoreManager);
           case 2:
-            return BugGamePage(level: level);  // ✅ BugGame 추가
+            return BugGamePage(level: roundNumber, scoreManager: scoreManager);
           default:
-            return CoupleGamePage(level: level); // 기본값 설정
+            return BugGamePage(level: roundNumber, scoreManager: scoreManager);
         }
       },
     ),
@@ -49,6 +53,7 @@ class HomePage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       print("Play Button Pressed");
+                      scoreManager.resetScore(); // ✅ 새 게임 시작 시 점수 초기화
                       startRandomGame(context, 1, 1); // ✅ 첫 번째 라운드 시작 (mounted 체크)
                     },
                     style: ElevatedButton.styleFrom(

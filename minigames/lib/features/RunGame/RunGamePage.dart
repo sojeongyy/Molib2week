@@ -3,11 +3,14 @@ import 'dart:async';
 import 'dart:math';
 import 'package:minigames/features/RunGame/CollisionPage.dart';
 import 'package:minigames/features/RunGame/NotCollisionPage.dart';
+import '../../core/ScoreManager.dart';
 import '../../core/Timer.dart';
 
 class RunGamePage extends StatefulWidget {
   final int level;
-  const RunGamePage({super.key, required this.level});
+  final ScoreManager scoreManager;
+
+  const RunGamePage({super.key, required this.level, required this.scoreManager});
 
   @override
   _RunGamePageState createState() => _RunGamePageState();
@@ -47,6 +50,7 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
       onComplete: () {
         if (!isGameOver && mounted) {
           isGameOver = true;  // 게임 종료 상태 플래그 업데이트
+          widget.scoreManager.addPoints(100); // ✅ 100점 추가
           _controller.stop(); // 애니메이션 멈춤
           Navigator.pushReplacement( // ✅ 바로 다음 페이지로 이동
             context,
