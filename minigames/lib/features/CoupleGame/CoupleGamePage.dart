@@ -58,7 +58,7 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
             widget.scoreManager.addPoints(100); // ✅ 점수 즉시 추가
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => InCorrectPage()),
+              MaterialPageRoute(builder: (context) => InCorrectPage(scoreManager: widget.scoreManager)),
             );
           }
         }
@@ -135,7 +135,7 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
                       // InCorrectPage 로 네비게이션
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => InCorrectPage()), // 직접 페이지 지정
+                        MaterialPageRoute(builder: (context) => InCorrectPage(scoreManager: widget.scoreManager)), // 직접 페이지 지정
                       );
                     }
                   },

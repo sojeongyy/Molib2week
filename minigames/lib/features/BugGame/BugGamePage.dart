@@ -55,7 +55,7 @@ class _BugGamePageState extends State<BugGamePage> with SingleTickerProviderStat
           _controller.stop();
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => BugRemainPage()),
+            MaterialPageRoute(builder: (context) => BugRemainPage(scoreManager: widget.scoreManager)),
           );
         }
       },

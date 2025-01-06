@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../core/ScoreButton.dart';
+import '../../core/ScoreManager.dart';
+
 class BugRemainPage extends StatelessWidget {
-  const BugRemainPage({super.key});
+  final ScoreManager scoreManager;
+
+  const BugRemainPage({super.key, required this.scoreManager});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +33,7 @@ class BugRemainPage extends StatelessWidget {
                 width: 100,
               ),
             ),
+            ScoreButton(scoreManager: scoreManager),
           ],
         ),
       ),

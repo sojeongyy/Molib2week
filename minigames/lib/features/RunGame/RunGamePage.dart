@@ -96,7 +96,7 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
       });
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => CollisionPage()),
+        MaterialPageRoute(builder: (context) => CollisionPage(scoreManager: widget.scoreManager)),
       );
 
     }

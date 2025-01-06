@@ -14,6 +14,7 @@ class NextButton extends StatelessWidget {
 
       onPressed: () {
         print("next 버튼 클릭");
+        print(level);
         startRandomGame(context, 1, level+1);
       },
 

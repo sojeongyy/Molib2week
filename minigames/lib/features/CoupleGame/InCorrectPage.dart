@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../core/ScoreButton.dart';
+import '../../core/ScoreManager.dart';
+
 class InCorrectPage extends StatelessWidget {
-  const InCorrectPage({super.key});
+  final ScoreManager scoreManager;
+  const InCorrectPage({super.key, required this.scoreManager});
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +54,8 @@ class InCorrectPage extends StatelessWidget {
               right: 20,
               child: Image.asset('assets/images/brown_person.png', width: 100),
             ),
+
+            ScoreButton(scoreManager: scoreManager),
           ],
         ),
     );
