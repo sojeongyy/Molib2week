@@ -4,34 +4,45 @@ import 'dart:math';
 import 'UhWrongPage.dart';
 import 'UhClearPage.dart';
 
-class BalloonGamePage extends StatefulWidget {
+class UhGamePage extends StatefulWidget {
   final int level; // 난이도: 말풍선의 개수와 표시 시간 조정
-  const BalloonGamePage({super.key, required this.level});
+  const UhGamePage({super.key, required this.level});
 
   @override
-  State<BalloonGamePage> createState() => _BalloonGamePageState();
+  State<UhGamePage> createState() => _UhGamePageState();
 }
 
-class _BalloonGamePageState extends State<BalloonGamePage> {
+class _UhGamePageState extends State<UhGamePage> {
   final List<Map<String, dynamic>> balloons = [];
   final Random random = Random();
-  final double characterAreaWidth = 400;
-  final double characterAreaHeight = 600;
   int balloonsCaught = 0;
   int balloonsMissed = 0;
   late Timer gameTimer;
   late Timer balloonTimer;
   int gameDuration = 7; // 총 게임 시간
-  int maxBalloons = 5;
+  late int maxBalloons;
   double balloonDisplayTime = 1.0;
+
+  // 캐릭터 위치 정의
+  final List<Offset> characterPositions = [
+    Offset(20, 120),
+    Offset(190, 120),
+    Offset(20, 290),
+    Offset(190, 290),
+    Offset(20, 460),
+    Offset(190, 460),
+  ];
+
+  // 각 캐릭터에 말풍선이 있는지 추적
+  final List<bool> characterHasBalloon = [false, false, false, false, false, false];
 
   @override
   void initState() {
     super.initState();
 
     // 난이도에 따른 말풍선 설정
-    maxBalloons = widget.level + 5; // 말풍선의 개수
-    balloonDisplayTime = max(0.3, 1.0 - widget.level * 0.05); // 말풍선 표시 시간
+    maxBalloons = 2 + (widget.level ~/ 5); // 레벨 5마다 1씩 증가, 최대 6
+    balloonDisplayTime = max(1.0, 2.5 - widget.level * 0.1); // 말풍선 표시 시간
 
     // 게임 시작
     startGame();
@@ -40,19 +51,12 @@ class _BalloonGamePageState extends State<BalloonGamePage> {
   void startGame() {
     // 게임 타이머 시작
     gameTimer = Timer(Duration(seconds: gameDuration), () {
-      if (balloonsMissed > 0) {
-        // 게임 오버
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => UhWrongPage()),
-        );
-      } else {
-        // 게임 승리
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => UhClearPage(level: widget.level)),
-        );
-      }
+      // 7초 동안 게임 오버가 발생하지 않으면 클리어
+      balloonTimer.cancel(); // 더 이상 말풍선 생성하지 않음
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => UhClearPage(level: widget.level)),
+      );
     });
 
     // 말풍선 생성 타이머
@@ -64,115 +68,114 @@ class _BalloonGamePageState extends State<BalloonGamePage> {
   }
 
   void createBalloon() {
-    // 말풍선 종류 리스트
-    final List<Map<String, dynamic>> balloonTypes = [
-      {"text": "어?", "isCorrect": true},
-      {"text": "오~", "isCorrect": false},
-      {"text": "아~", "isCorrect": false},
-      {"text": "와!", "isCorrect": false},
-    ];
-
-    // "헉!" 말풍선 추가 (레벨 10 이상에서만 등장)
-    if (widget.level >= 10 && random.nextDouble() < 0.2) {
-      final double x = random.nextDouble() * (characterAreaWidth - 60);
-      final double y = random.nextDouble() * (characterAreaHeight - 60);
-
-      final specialBalloon = {
-        "id": DateTime.now().millisecondsSinceEpoch, // 고유 ID
-        "x": x,
-        "y": y,
-        "text": "헉!", // 특수 말풍선
-        "isCorrect": true, // "헉!"도 정답으로 처리
-        "isSpecial": true, // 특수 말풍선 여부
-      };
-
-      setState(() {
-        balloons.add(specialBalloon);
-      });
-
-      // 0.2초 후 자동 제거
-      Timer(const Duration(milliseconds: 200), () {
-        if (mounted) {
-          setState(() {
-            balloons.removeWhere((b) => b["id"] == specialBalloon["id"]);
-            if (specialBalloon["isCorrect"] == true) {
-              balloonsMissed++; // "헉!"을 놓쳤을 경우
-              checkGameOver();
-            }
-          });
-        }
-      });
-      return; // 특수 말풍선만 생성하고 종료
+    List<int> availableCharacters = [];
+    for (int i = 0; i < characterHasBalloon.length; i++) {
+      if (!characterHasBalloon[i]) {
+        availableCharacters.add(i);
+      }
     }
 
-    // 일반 말풍선 생성
-    final double x = random.nextDouble() * (characterAreaWidth - 60);
-    final double y = random.nextDouble() * (characterAreaHeight - 60);
+    if (availableCharacters.isEmpty) {
+      return;
+    }
 
-    // 확률에 따라 말풍선 텍스트 결정
+    int characterIndex = availableCharacters[random.nextInt(availableCharacters.length)];
+    characterHasBalloon[characterIndex] = true;
+
+    // "헉!" 확률 계산
+    double specialBalloonProbability = 0.0;
+    if (widget.level >= 10) {
+      specialBalloonProbability = (5 + (widget.level - 10)).clamp(5, 30).toDouble() / 100.0;
+    }
+
     final double probability = random.nextDouble();
     Map<String, dynamic> selectedBalloon;
-    if (probability < 0.5) {
-      // 50% 확률로 "어?"
-      selectedBalloon = {"text": "어?", "isCorrect": true};
+
+    if (widget.level >= 10 && probability < specialBalloonProbability) {
+      selectedBalloon = {
+        "image": "assets/images/Huk.png",
+        "isCorrect": true,
+        "duration": 0.7,
+      };
+    } else if (probability < 0.5 + specialBalloonProbability) {
+      selectedBalloon = {
+        "image": "assets/images/Uh.png",
+        "isCorrect": true,
+        "duration": balloonDisplayTime,
+      };
     } else {
-      // 나머지 50% 확률에서 균등 분배
       final List<Map<String, dynamic>> otherBalloons = [
-        {"text": "오~", "isCorrect": false},
-        {"text": "아~", "isCorrect": false},
-        {"text": "와!", "isCorrect": false},
+        {"image": "assets/images/Oh.png", "isCorrect": false, "duration": balloonDisplayTime},
+        {"image": "assets/images/Ah.png", "isCorrect": false, "duration": balloonDisplayTime},
+        {"image": "assets/images/Wa!.png", "isCorrect": false, "duration": balloonDisplayTime},
       ];
-      selectedBalloon = otherBalloons[(probability - 0.5) ~/ (0.5 / otherBalloons.length)];
+      selectedBalloon = otherBalloons[
+      ((probability - (0.5 + specialBalloonProbability)) / (0.5 / otherBalloons.length)).floor()];
     }
 
     final balloon = {
-      "id": DateTime.now().millisecondsSinceEpoch, // 고유 ID
-      "x": x,
-      "y": y,
-      "text": selectedBalloon["text"], // 랜덤 텍스트
-      "isCorrect": selectedBalloon["isCorrect"], // 정답 여부
+      "id": DateTime.now().millisecondsSinceEpoch,
+      "characterIndex": characterIndex,
+      "x": characterPositions[characterIndex].dx + 80,
+      "y": characterPositions[characterIndex].dy - 30,
+      "image": selectedBalloon["image"] ?? "assets/images/default.png",
+      "isCorrect": selectedBalloon["isCorrect"],
+      "clicked": false, // 터치 여부 추적
     };
 
     setState(() {
       balloons.add(balloon);
     });
 
-    // 일정 시간 후 말풍선 제거
-    Timer(Duration(seconds: balloonDisplayTime.toInt()), () {
+    // 말풍선 제거 타이머
+    Timer(Duration(milliseconds: (selectedBalloon["duration"] * 1000).toInt()), () {
       if (mounted) {
         setState(() {
-          balloons.removeWhere((b) => b["id"] == balloon["id"]);
-          if (balloon["isCorrect"]) {
-            balloonsMissed++; // "어?"를 놓쳤을 경우
-            checkGameOver();
+          // 말풍선을 삭제하기 전에 상태 확인
+          Map<String, dynamic>? currentBalloon =
+          balloons.firstWhere((b) => b["id"] == balloon["id"], orElse: () => {});
+          if (currentBalloon.isNotEmpty && !currentBalloon["clicked"]) {
+            // "어?" 또는 "헉!"이 자동으로 사라질 경우 게임 오버
+            if (currentBalloon["isCorrect"]) {
+              triggerGameOver();
+            }
           }
+
+          // 말풍선 제거
+          balloons.removeWhere((b) => b["id"] == balloon["id"]);
+          characterHasBalloon[characterIndex] = false;
         });
       }
     });
   }
 
-  void onBalloonTap(int id, bool isCorrect) {
+  void onBalloonTap(int id, int characterIndex, bool isCorrect) {
     setState(() {
-      balloons.removeWhere((b) => b["id"] == id);
-      if (isCorrect) {
-        balloonsCaught++;
-      } else {
-        // 잘못된 말풍선을 터치한 경우
-        balloonsMissed++;
-        checkGameOver();
+      // 풍선의 클릭 상태를 업데이트
+      Map<String, dynamic>? currentBalloon =
+      balloons.firstWhere((b) => b["id"] == id, orElse: () => {});
+      if (currentBalloon.isNotEmpty) {
+        currentBalloon["clicked"] = true;
       }
+
+      // "어?" 또는 "헉!"이 아닌 풍선을 터치하면 게임 오버
+      if (!isCorrect) {
+        triggerGameOver();
+      }
+
+      // 풍선 제거
+      balloons.removeWhere((b) => b["id"] == id);
+      characterHasBalloon[characterIndex] = false;
     });
   }
 
-  void checkGameOver() {
-    if (balloonsMissed > 0) {
-      gameTimer.cancel();
-      balloonTimer.cancel();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => UhWrongPage()),
-      );
-    }
+  void triggerGameOver() {
+    gameTimer.cancel();
+    balloonTimer.cancel();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => UhWrongPage()),
+    );
   }
 
   @override
@@ -181,56 +184,136 @@ class _BalloonGamePageState extends State<BalloonGamePage> {
       backgroundColor: Colors.lightBlueAccent,
       body: Stack(
         children: [
-          // 게임 남은 시간 표시
+          // 상단 문구 표시
           Positioned(
-            top: 20,
+            top: 60,
             left: 20,
-            child: Text(
-              "남은 시간: ${gameDuration - gameTimer.tick}s",
-              style: const TextStyle(fontSize: 20, color: Colors.white),
-            ),
-          ),
-
-          // 말풍선 표시
-          Center(
-            child: SizedBox(
-              width: characterAreaWidth,
-              height: characterAreaHeight,
-              child: Stack(
-                children: balloons.map((balloon) {
-                  return Positioned(
-                    top: balloon["y"],
-                    left: balloon["x"],
-                    child: GestureDetector(
-                      onTap: () => onBalloonTap(balloon["id"], balloon["isCorrect"]),
-                      child: Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: balloon["isCorrect"] ? Colors.orange : Colors.grey,
-                          shape: BoxShape.circle,
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          balloon["text"],
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
+            right: 20,
+            child: Center(
+              child: Text(
+                widget.level >= 10
+                    ? '절대 "헉!"이라고도 하지 마'
+                    : '절대 "어?"를 말하지 마',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
           ),
+
+          // 캐릭터 표시
+          ...characterPositions.asMap().entries.map((entry) {
+            int index = entry.key;
+            Offset position = entry.value;
+            return Positioned(
+              top: position.dy,
+              left: position.dx,
+              child: Image.asset(
+                'assets/images/person_with_pc_${index + 1}.png',
+                width: 150,
+                height: 150,
+              ),
+            );
+          }).toList(),
+
+          // 말풍선 표시
+          ...balloons.map((balloon) {
+            return Positioned(
+              top: balloon["y"],
+              left: balloon["x"],
+              child: GestureDetector(
+                onTap: () => onBalloonTap(
+                  balloon["id"],
+                  balloon["characterIndex"],
+                  balloon["isCorrect"],
+                ),
+                child: Image.asset(
+                  balloon["image"], // 말풍선 이미지 표시
+                  width: 80,
+                  height: 80,
+                ),
+              ),
+            );
+          }).toList(),
         ],
       ),
     );
   }
+
+
 
   @override
   void dispose() {
     gameTimer.cancel();
     balloonTimer.cancel();
     super.dispose();
+  }
+}
+
+class UhWrongPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "Wrong Page",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const UhGamePage(level: 1), // 초기 레벨로 다시 시작
+                  ),
+                );
+              },
+              child: const Text("다시하기"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class UhClearPage extends StatelessWidget {
+  final int level;
+  const UhClearPage({required this.level});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Clear Page - Level: $level",
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UhGamePage(level: level + 1), // 다음 레벨로 진행
+                  ),
+                );
+              },
+              child: const Text("다시하기"),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

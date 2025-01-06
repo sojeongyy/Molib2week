@@ -71,3 +71,26 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+// import 'package:flutter/material.dart';
+// import 'features/UhWordGame/UhGamePage.dart';
+//
+// void main() {
+//   runApp(const MyApp());
+// }
+//
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Test UhGamePage',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       // UhGamePage를 초기화면으로 설정
+//       home: const UhGamePage(level: 1), // 원하는 level 값으로 설정
+//     );
+//   }
+// }

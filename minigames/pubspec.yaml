@@ -89,6 +89,17 @@ flutter:
     - assets/images/bugTalking.png
     - assets/images/blueScreen.png
     - assets/images/bugFuck.png
+    - assets/images/Ah.png
+    - assets/images/Huk.png
+    - assets/images/Oh.png
+    - assets/images/Uh.png
+    - assets/images/Wa!.png
+    - assets/images/person_with_pc_1.png
+    - assets/images/person_with_pc_2.png
+    - assets/images/person_with_pc_3.png
+    - assets/images/person_with_pc_4.png
+    - assets/images/person_with_pc_5.png
+    - assets/images/person_with_pc_6.png
 
     - assets/vectors/setting.svg
     - assets/vectors/user.svg
