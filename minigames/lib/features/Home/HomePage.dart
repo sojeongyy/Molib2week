@@ -11,8 +11,6 @@ import '../CoupleGame/CoupleGamePage.dart';
 void startRandomGame(BuildContext context, int roundNumber, int level) {
   final random = Random().nextBool(); // 랜덤으로 게임 선택
 
-  if (!context.mounted) return; // 안전한 context 사용
-
   Navigator.pushReplacement( // ✅ 기존 페이지를 닫고 새로운 게임 시작
     context,
     MaterialPageRoute(
@@ -40,9 +38,8 @@ class HomePage extends StatelessWidget {
                   const SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () {
-                      if (context.mounted) {
-                        startRandomGame(context, 1, 1); // ✅ 첫 번째 라운드 시작 (mounted 체크)
-                      }
+                      print("Play Button Pressed");
+                      startRandomGame(context, 1, 1); // ✅ 첫 번째 라운드 시작 (mounted 체크)
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.softBlue,

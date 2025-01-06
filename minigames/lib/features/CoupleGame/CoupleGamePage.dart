@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:minigames/features/CoupleGame/InCorrectPage.dart';
 import '../../core/Timer.dart';
@@ -31,9 +33,11 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
       duration: const Duration(milliseconds: 500),
     );
 
+    _setRandomSpeechBubble();
+
     // ✅ 난이도에 따라 제한 시간 조정
     gameDuration -= widget.level * 1;
-    if (gameDuration < 2) gameDuration = 2; // 최소 2초 제한
+    if (gameDuration < 1) gameDuration = 1; // 최소 1초 제한
 
     timerManager = TimerManager(
       context: context,
@@ -62,6 +66,17 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
     },
     );
     timerManager.startTimer();
+  }
+
+  // ✅ 말풍선을 랜덤으로 선택하는 함수
+  void _setRandomSpeechBubble() {
+    final speechBubbles = [
+      'assets/images/blue_think.png',
+      'assets/images/brown_think.png',
+      'assets/images/green_think.png',
+      'assets/images/yellow_think.png',
+    ];
+    speechBubbleImage = speechBubbles[Random().nextInt(speechBubbles.length)];
   }
 
   // 정답 캐릭터 결정 (말풍선에 따라)
@@ -184,28 +199,6 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
               child: Image.asset('assets/images/brown_person.png', width: 100),
             ),
           ),
-
-          // ✅ 새로운 문제 버튼 (말풍선 변경)
-          // Positioned(
-          //   top: 20,
-          //   right: 10,
-          //   child: ElevatedButton(
-          //     onPressed: () {
-          //       if (mounted) {
-          //         setState(() {
-          //           final speechBubbles = [
-          //             'assets/images/blue_think.png',
-          //             'assets/images/brown_think.png',
-          //             'assets/images/green_think.png',
-          //             'assets/images/yellow_think.png',
-          //           ];
-          //           speechBubbleImage = (speechBubbles..shuffle()).first;
-          //         });
-          //       }
-          //     },
-          //     child: const Text("새로운 문제", style: TextStyle(fontSize: 18)),
-          //   ),
-          // ),
         ],
       ),
     );

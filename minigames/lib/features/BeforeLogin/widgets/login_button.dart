@@ -8,10 +8,9 @@ class LoginButton extends StatelessWidget {
     return ElevatedButton(
 
       onPressed: () {
-        print("로그인 버튼 클릭");
+        print("로그인 버튼 클릭 - 홈 화면으로 이동");
         // LoginPage로 이동
-        Navigator.push(
-          context,
+        Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => LoginPage()), // 직접 페이지 지정
         );
       },
