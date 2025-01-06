@@ -6,7 +6,8 @@
 
     <application
         android:label="minigames"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
 
         <!-- MainActivity (카카오 로그인 및 카카오톡 공유 처리 통합) -->
         <activity
