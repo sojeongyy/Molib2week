@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/NextButton.dart';
-import '../Login/widgets/background_image.dart';
+import 'widgets/background_image.dart';
 import '../../core/colors.dart';
 
 class NotCollisionPage extends StatefulWidget {

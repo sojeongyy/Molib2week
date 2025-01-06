@@ -10,20 +10,28 @@ class Scoreboard extends StatelessWidget {
   Widget build(BuildContext context) {
     // 상위 3개의 점수만 표시 (내림차순 정렬 후 상위 3개 선택)
     final topScores = (scores..sort((a, b) => b.compareTo(a))).take(3).toList();
+    double width = 290;
 
     return Container(
-      width: 320,
+      width: width,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.beige,
+        color: AppColors.customYellow,
         borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            offset: const Offset(0, 10),  // 아래 방향
+            spreadRadius: 2,
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // 타이틀 : SCOREBOARD
           Container(
-            width: 300,
+            width: width,
             padding: const EdgeInsets.all(10), // 내부 여백 추가
             decoration: BoxDecoration(
               color: Colors.white,
@@ -36,7 +44,6 @@ class Scoreboard extends StatelessWidget {
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
-                fontFamily: 'Inter-24pt-Black',
               ),
             ),
           ),
@@ -45,7 +52,7 @@ class Scoreboard extends StatelessWidget {
           // 정확히 3등분하는 상자
           Container(
             height: 171,
-            width: 300,
+            width: width,
             padding: const EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -68,7 +75,7 @@ class Scoreboard extends StatelessWidget {
                 ),
                 // 첫 번째 선
                 const Divider(
-                  color: AppColors.beige,
+                  color: AppColors.customYellow,
                   thickness: 1.5,
                   height: 0, // 높이 0으로 설정하여 선만 표시
                 ),
@@ -87,7 +94,7 @@ class Scoreboard extends StatelessWidget {
                 ),
                 // 두 번째 선
                 const Divider(
-                  color: AppColors.beige,
+                  color: AppColors.customYellow,
                   thickness: 1.5,
                   height: 0,
                 ),

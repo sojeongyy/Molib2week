@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:minigames/features/Home/widgets/play_button.dart';
 import '../../core/ScoreManager.dart';
 import '../BugGame/BugGamePage.dart';
 import 'widgets/scoreboard.dart';
-import '../Login/widgets/background_image.dart';
+import 'widgets/background_image.dart';
 import '../../core/colors.dart';
 import '../RunGame/RunGamePage.dart';
 import '../CoupleGame/CoupleGamePage.dart';
@@ -41,7 +42,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          const BackgroundImage(),
+          BackgroundImage(),
           SafeArea(
             child: Center(
               child: Column(
@@ -49,49 +50,35 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Scoreboard(scores: [720, 700, 600]),
-                  const SizedBox(height: 30),
-                  ElevatedButton(
+                  const SizedBox(height: 50),
+                  PlayButton(
                     onPressed: () {
-                      print("Play Button Pressed");
-                      scoreManager.resetScore(); // ✅ 새 게임 시작 시 점수 초기화
-                      startRandomGame(context, 1, 1); // ✅ 첫 번째 라운드 시작 (mounted 체크)
+                      startRandomGame(context, 1, 1);
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.softBlue,
-                      padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 15),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                    ),
-                    child: const Text(
-                      'PLAY',
-                      style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+                    scoreManager: scoreManager, // ✅ 점수 매니저 전달
                   ),
                 ],
               ),
             ),
           ),
+          // Positioned(
+          //   bottom: 10,
+          //   left: 30,
+          //   child: Image.asset(
+          //     'assets/images/brown_person.png',
+          //     width: 150,
+          //   ),
+          // ),
+          // Positioned(
+          //   bottom: 20,
+          //   right: 30,
+          //   child: Image.asset(
+          //     'assets/images/yellow_person.png',
+          //     width: 150,
+          //   ),
+          // ),
           Positioned(
-            bottom: 10,
-            left: 30,
-            child: Image.asset(
-              'assets/images/brown_person.png',
-              width: 150,
-            ),
-          ),
-          Positioned(
-            bottom: 20,
-            right: 30,
-            child: Image.asset(
-              'assets/images/yellow_person.png',
-              width: 150,
-            ),
-          ),
-          Positioned(
-            top: 20,
+            top: 30,
             right: 70,
             child: SvgPicture.asset(
               'assets/vectors/user.svg',
@@ -99,7 +86,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 20,
+            top: 30,
             right: 20,
             child: SvgPicture.asset(
               'assets/vectors/setting.svg',

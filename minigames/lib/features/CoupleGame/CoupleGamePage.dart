@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:minigames/features/CoupleGame/InCorrectPage.dart';
 import '../../core/ScoreManager.dart';
@@ -55,7 +54,7 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
             _controller.stop();
           });
           if (mounted) {
-            widget.scoreManager.addPoints(100); // ✅ 점수 즉시 추가
+
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => InCorrectPage(scoreManager: widget.scoreManager)),
@@ -122,6 +121,7 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
                       // ✅ mounted 체크 추가 (안전성 보장)
                       Future.delayed(Duration.zero, () {
                         if (mounted) {  // ✅ 비동기 이후 상태 체크
+                          widget.scoreManager.addPoints(100); // ✅ 점수 즉시 추가
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

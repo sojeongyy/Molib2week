@@ -66,7 +66,7 @@ Widget buildProgressBar(double timeLeft, int gameDuration) {
     width: max(1, MediaQueryData.fromWindow(WidgetsBinding.instance.window).size.width * (1 - (timeLeft / gameDuration))),
     height: 5,
     decoration: BoxDecoration(
-      color: AppColors.softBlue,
+      color: AppColors.customMint,
     ),
   );
 }
