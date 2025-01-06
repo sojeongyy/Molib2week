@@ -23,13 +23,13 @@ void startRandomGame(BuildContext context, int roundNumber, int level) {
       builder: (context) {
         switch (randomIndex) {
           case 0:
-            return CoupleGamePage(level: roundNumber, scoreManager: scoreManager);
+            return CoupleGamePage(level: level, scoreManager: scoreManager);
           case 1:
-            return RunGamePage(level: roundNumber, scoreManager: scoreManager);
+            return RunGamePage(level: level, scoreManager: scoreManager);
           case 2:
-            return BugGamePage(level: roundNumber, scoreManager: scoreManager);
+            return BugGamePage(level: level, scoreManager: scoreManager);
           default:
-            return BugGamePage(level: roundNumber, scoreManager: scoreManager);
+            return BugGamePage(level: level, scoreManager: scoreManager);
         }
       },
     ),
