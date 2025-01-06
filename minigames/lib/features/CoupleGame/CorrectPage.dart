@@ -79,13 +79,6 @@ class _CorrectPageState extends State<CorrectPage> with SingleTickerProviderStat
                   child: NextButton(level: widget.level),
                 ),
 
-                // const SizedBox(height: 20),
-                // ElevatedButton(
-                //   onPressed: () {
-                //     Navigator.pop(context); // 이전 화면으로 돌아가기
-                //   },
-                //   child: const Text('다시 도전하기'),
-                // ),
               ],
             ),
           ),

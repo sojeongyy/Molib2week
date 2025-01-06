@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import '../../core/ScoreButton.dart';
+import '../../core/ScoreManager.dart';
 
 
 class CollisionPage extends StatelessWidget {
+  final ScoreManager scoreManager;
+
+  const CollisionPage({super.key, required this.scoreManager});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +30,8 @@ class CollisionPage extends StatelessWidget {
             left: -50,
             child: Image.asset('assets/images/cryingperson.png', width: 380),
           ),
+          // ✅ ScoreButton을 오른쪽 하단에 추가
+          ScoreButton(scoreManager: scoreManager),
         ],
       ),
     );

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import '../../../core/ScoreManager.dart';
 import '../../../core/colors.dart';
+import '../../Home/HomePage.dart';
 
-class Scoreboard extends StatelessWidget {
+class Score extends StatelessWidget {
   final List<int> scores;
+  final ScoreManager scoreManager;
 
-  const Scoreboard({super.key, required this.scores});
+  const Score({super.key, required this.scores, required this.scoreManager});
+
 
   @override
   Widget build(BuildContext context) {
     // 상위 3개의 점수만 표시 (내림차순 정렬 후 상위 3개 선택)
     final topScores = (scores..sort((a, b) => b.compareTo(a))).take(3).toList();
-    double width = 290;
+    double width = 280;
 
     return Container(
       width: width,
@@ -37,8 +41,8 @@ class Scoreboard extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Text(
-              'SCOREBOARD',
+            child: Text(
+              'SCORE : ${scoreManager.score}',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 30,

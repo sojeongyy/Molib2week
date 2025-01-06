@@ -4,17 +4,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../Login/widgets/background_image.dart';
-import '../../core/colors.dart';
+import 'package:minigames/features/Home/widgets/play_button.dart';
+import '../../core/ScoreManager.dart';
+import '../BugGame/BugGamePage.dart';
+import 'widgets/scoreboard.dart';
+import 'widgets/background_image.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'widgets/profilePopup.dart';
-import 'widgets/scoreboard.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import '../BugGame/BugGamePage.dart';
-import '../Login/widgets/background_image.dart';
 import '../RunGame/RunGamePage.dart';
 import '../CoupleGame/CoupleGamePage.dart';
 
+final ScoreManager scoreManager = ScoreManager();
 
 // ✅ 게임을 성공 후 RoundPage를 거쳐 랜덤 게임 시작 (mounted 체크 추가)
 void startRandomGame(BuildContext context, int roundNumber, int level) {
@@ -27,13 +28,13 @@ void startRandomGame(BuildContext context, int roundNumber, int level) {
       builder: (context) {
         switch (randomIndex) {
           case 0:
-            return CoupleGamePage(level: level);
+            return CoupleGamePage(level: level, scoreManager: scoreManager);
           case 1:
-            return RunGamePage(level: level);
+            return RunGamePage(level: level, scoreManager: scoreManager);
           case 2:
-            return BugGamePage(level: level);  // ✅ BugGame 추가
+            return BugGamePage(level: level, scoreManager: scoreManager);
           default:
-            return CoupleGamePage(level: level); // 기본값 설정
+            return BugGamePage(level: level, scoreManager: scoreManager);
         }
       },
     ),
@@ -191,7 +192,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Stack(
         children: [
-          const BackgroundImage(),
+          BackgroundImage(),
           SafeArea(
             child: Center(
               child: Column(
@@ -199,48 +200,35 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Scoreboard(scores: [720, 700, 600]),
-                  const SizedBox(height: 30),
-                  ElevatedButton(
+                  const SizedBox(height: 50),
+                  PlayButton(
                     onPressed: () {
-                      print("Play Button Pressed");
-                      startRandomGame(context, 1, 1); // ✅ 첫 번째 라운드 시작 (mounted 체크)
+                      startRandomGame(context, 1, 1);
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.softBlue,
-                      padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 15),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                    ),
-                    child: const Text(
-                      'PLAY',
-                      style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+                    scoreManager: scoreManager, // ✅ 점수 매니저 전달
                   ),
                 ],
               ),
             ),
           ),
+          // Positioned(
+          //   bottom: 10,
+          //   left: 30,
+          //   child: Image.asset(
+          //     'assets/images/brown_person.png',
+          //     width: 150,
+          //   ),
+          // ),
+          // Positioned(
+          //   bottom: 20,
+          //   right: 30,
+          //   child: Image.asset(
+          //     'assets/images/yellow_person.png',
+          //     width: 150,
+          //   ),
+          // ),
           Positioned(
-            bottom: 10,
-            left: 30,
-            child: Image.asset(
-              'assets/images/brown_person.png',
-              width: 150,
-            ),
-          ),
-          Positioned(
-            bottom: 20,
-            right: 30,
-            child: Image.asset(
-              'assets/images/yellow_person.png',
-              width: 150,
-            ),
-          ),
-          Positioned(
-            top: 20,
+            top: 30,
             right: 70,
             child: GestureDetector(
               onTap: () => _showProfilePopup(context), // 프로필 팝업 표시
@@ -251,7 +239,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Positioned(
-            top: 20,
+            top: 30,
             right: 20,
             child: SvgPicture.asset(
               'assets/vectors/setting.svg',

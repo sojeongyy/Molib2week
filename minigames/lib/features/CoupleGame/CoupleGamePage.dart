@@ -1,15 +1,15 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:minigames/features/CoupleGame/InCorrectPage.dart';
+import '../../core/ScoreManager.dart';
 import '../../core/Timer.dart';
 import 'CorrectPage.dart';
 
 class CoupleGamePage extends StatefulWidget {
-  // final VoidCallback onGameSuccess;
   final int level; // 난이도
+  final ScoreManager scoreManager;
 
-  const CoupleGamePage({super.key, required this.level});
+  const CoupleGamePage({super.key, required this.level, required this.scoreManager});
 
   @override
   State<CoupleGamePage> createState() => _CoupleGamePageState();
@@ -17,7 +17,6 @@ class CoupleGamePage extends StatefulWidget {
 
 class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProviderStateMixin{
   String speechBubbleImage = 'assets/images/green_think.png';
-  late Future<void> _delayedTransition; // ✅ Future 추가 (안전하게 사용)
   late TimerManager timerManager;
   late AnimationController _controller;
   int gameDuration = 5;
@@ -54,16 +53,15 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
             isGameOver = false;
             _controller.stop();
           });
-          Future.delayed(const Duration(seconds: 1), () {
-            if (mounted) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => InCorrectPage()),
-              );
-            }
-          });
+          if (mounted) {
+
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => InCorrectPage(scoreManager: widget.scoreManager)),
+            );
+          }
         }
-    },
+      },
     );
     timerManager.startTimer();
   }
@@ -123,6 +121,7 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
                       // ✅ mounted 체크 추가 (안전성 보장)
                       Future.delayed(Duration.zero, () {
                         if (mounted) {  // ✅ 비동기 이후 상태 체크
+                          widget.scoreManager.addPoints(100); // ✅ 점수 즉시 추가
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -136,7 +135,7 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
                       // InCorrectPage 로 네비게이션
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => InCorrectPage()), // 직접 페이지 지정
+                        MaterialPageRoute(builder: (context) => InCorrectPage(scoreManager: widget.scoreManager)), // 직접 페이지 지정
                       );
                     }
                   },

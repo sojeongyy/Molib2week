@@ -90,6 +90,8 @@ flutter:
     - assets/images/bugTalking.png
     - assets/images/blueScreen.png
     - assets/images/bugFuck.png
+    - assets/images/title.png
+    - assets/images/background_image.jpg
 
     - assets/vectors/setting.svg
     - assets/vectors/user.svg
@@ -108,10 +110,15 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-fonts:
- - family: Inter_24pt-Black
-   fonts:
-     - asset: assets/fonts/Inter_24pt-Black.ttf
+  fonts:
+    - family: Inter_24pt-Black
+      fonts:
+        - asset: assets/fonts/Inter_24pt-Black.ttf
+
+    - family: cooper-bold-bt
+      fonts:
+        - asset: assets/fonts/cooper-bold-bt.ttf
+
 
   #   - family: Trajan Pro
   #     fonts:

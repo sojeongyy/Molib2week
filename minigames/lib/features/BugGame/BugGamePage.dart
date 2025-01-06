@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import '../../core/ScoreManager.dart';
 import '../../core/Timer.dart';
 import 'BugRemainPage.dart';
 import 'BugSuccessPage.dart';
 
 class BugGamePage extends StatefulWidget {
   final int level; // 난이도에 따라 벌레의 개수를 조정
-  const BugGamePage({super.key, required this.level});
+  final ScoreManager scoreManager;
+
+  const BugGamePage({super.key, required this.level, required this.scoreManager});
 
   @override
   State<BugGamePage> createState() => _BugGamePageState();
@@ -52,7 +55,7 @@ class _BugGamePageState extends State<BugGamePage> with SingleTickerProviderStat
           _controller.stop();
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => BugRemainPage()),
+            MaterialPageRoute(builder: (context) => BugRemainPage(scoreManager: widget.scoreManager)),
           );
         }
       },
@@ -91,6 +94,7 @@ class _BugGamePageState extends State<BugGamePage> with SingleTickerProviderStat
     if (bugCaught.every((caught) => caught)) {
       if (mounted && !_isDisposed) {
         _isDisposed = true; // ✅ 중복 방지
+        widget.scoreManager.addPoints(100); // ✅ 100점 추가
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => BugSuccessPage(level: widget.level)),
