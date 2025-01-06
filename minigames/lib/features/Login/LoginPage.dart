@@ -43,11 +43,15 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
 
-                  LoginButton(),
+                  LoginButton(
+                    idController: idController,
+                    passwordController: passwordController,
+                  ),
                   const SizedBox(height: 10),
                   // 카카오 로그인 버튼
                   const KakaoLoginButton(),
-                  //const SizedBox(height: 20),
+                  const SizedBox(height: 10),
+
                 ],
               ),
             ),
