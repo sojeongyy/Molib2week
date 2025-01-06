@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -9,6 +10,10 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'widgets/profilePopup.dart';
 import 'widgets/scoreboard.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import '../BugGame/BugGamePage.dart';
+import '../Login/widgets/background_image.dart';
+import '../RunGame/RunGamePage.dart';
+import '../CoupleGame/CoupleGamePage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -154,6 +159,30 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+// ✅ 게임을 성공 후 RoundPage를 거쳐 랜덤 게임 시작 (mounted 체크 추가)
+void startRandomGame(BuildContext context, int roundNumber, int level) {
+  final randomIndex = Random().nextInt(3); // ✅ 3개의 게임을 랜덤으로 선택 (0, 1, 2)
+
+  // ✅ 기존 페이지를 닫고 랜덤으로 새로운 게임 시작
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) {
+        switch (randomIndex) {
+          case 0:
+            return CoupleGamePage(level: level);
+          case 1:
+            return RunGamePage(level: level);
+          case 2:
+            return BugGamePage(level: level);  // ✅ BugGame 추가
+          default:
+            return CoupleGamePage(level: level); // 기본값 설정
+        }
+      },
+    ),
+  );
+}
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -170,14 +199,13 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () {
-                      print('Play Button Pressed');
+                      print("Play Button Pressed");
+                      startRandomGame(context, 1, 1); // ✅ 첫 번째 라운드 시작 (mounted 체크)
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.softBlue,
                       padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                     ),
                     child: const Text(
                       'PLAY',
@@ -190,6 +218,22 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
+            ),
+          ),
+          Positioned(
+            bottom: 10,
+            left: 30,
+            child: Image.asset(
+              'assets/images/brown_person.png',
+              width: 150,
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            right: 30,
+            child: Image.asset(
+              'assets/images/yellow_person.png',
+              width: 150,
             ),
           ),
           Positioned(

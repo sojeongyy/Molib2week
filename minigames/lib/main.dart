@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:minigames/features/CoupleGame/CoupleGamePage.dart';
+import 'package:audioplayers/audioplayers.dart';  // 오디오플레이어 임포트
+import 'package:minigames/features/RunGame/NotCollisionPage.dart';
 import 'features/BeforeLogin/BeforeLoginPage.dart';
 import 'core/colors.dart'; // 색상 파일 임포트
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart'; // 카카오 SDK 임포트
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'features/BugGame/BugGamePage.dart';
+import 'features/RunGame/RunGamePage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 초기화
@@ -16,8 +22,33 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final AudioPlayer _audioPlayer = AudioPlayer();  // 오디오플레이어 인스턴스 생성
+
+  @override
+  void initState() {
+    super.initState();
+    _playBackgroundMusic(); // 앱 시작 시 배경음악 재생
+  }
+
+  void _playBackgroundMusic() async {
+    await _audioPlayer.setSource(AssetSource('audios/Background.mp3'));
+    _audioPlayer.setReleaseMode(ReleaseMode.loop);  // 반복 재생
+    _audioPlayer.play(AssetSource('audios/Background.mp3'));
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose(); // 메모리 해제
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +66,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-      // 첫 화면 지정
+      // 첫 화면 설정
       home: BeforeLoginPage(),
     );
   }
