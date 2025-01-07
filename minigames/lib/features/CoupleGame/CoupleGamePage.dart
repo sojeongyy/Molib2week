@@ -100,7 +100,7 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
     String targetCharacter = getTargetCharacter();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFE1FB),
+      backgroundColor: const Color(0xFFF47599),
       body: Stack(
         children: [
           // ✅ 상단 타이머 추가

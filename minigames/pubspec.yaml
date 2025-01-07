@@ -91,6 +91,7 @@ flutter:
     - assets/images/blueScreen.png
     - assets/images/bugFuck.png
     - assets/images/title.png
+    - assets/images/default_profile.png
     - assets/images/background_image.jpg
 
     - assets/vectors/setting.svg

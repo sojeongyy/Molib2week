@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:minigames/features/Home/widgets/profile_popup_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -51,6 +52,30 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String nickname = '';
   bool isKakaoLinked = false;
+
+  void _navigateToProfilePage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProfilePopupPage(
+          nickname: nickname,
+          isKakaoLinked: isKakaoLinked,
+          onKakaoLink: () {
+            setState(() {
+              isKakaoLinked = true;
+            });
+            Navigator.pop(context); // 카카오 연동 완료 후 뒤로 가기
+          },
+          onKakaoUnlink: () {
+            setState(() {
+              isKakaoLinked = false;
+            });
+            Navigator.pop(context); // 카카오 연결 해제 후 뒤로 가기
+          },
+        ),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -171,17 +196,15 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _showProfilePopup(BuildContext context) {
+  void _showProfilePopup() {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return ProfilePopup(
-          nickname: nickname,
-          isKakaoLinked: isKakaoLinked,
-          onKakaoLink: () => _linkKakao(context),
-          onKakaoUnlink: () => _unlinkKakao(context),
-        );
-      },
+      builder: (context) => ProfilePopupPage(
+        nickname: nickname,
+        isKakaoLinked: isKakaoLinked,
+        onKakaoLink: () => _linkKakao(context),
+        onKakaoUnlink: () => _unlinkKakao(context),
+      ),
     );
   }
 
@@ -211,27 +234,12 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          // Positioned(
-          //   bottom: 10,
-          //   left: 30,
-          //   child: Image.asset(
-          //     'assets/images/brown_person.png',
-          //     width: 150,
-          //   ),
-          // ),
-          // Positioned(
-          //   bottom: 20,
-          //   right: 30,
-          //   child: Image.asset(
-          //     'assets/images/yellow_person.png',
-          //     width: 150,
-          //   ),
-          // ),
+
           Positioned(
             top: 40,
             right: 70,
             child: GestureDetector(
-              onTap: () => _showProfilePopup(context), // 프로필 팝업 표시
+              onTap: _showProfilePopup, // 프로필 팝업 표시
               child: SvgPicture.asset(
                 'assets/vectors/user.svg',
                 width: 40,

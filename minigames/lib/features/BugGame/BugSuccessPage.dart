@@ -9,7 +9,7 @@ class BugSuccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFDAFFFD),
+      backgroundColor: const Color(0xFF61E1B4),
       body: Center(
         child: Stack(
           children: [

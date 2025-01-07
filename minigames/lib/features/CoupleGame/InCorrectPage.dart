@@ -10,7 +10,7 @@ class InCorrectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFFFFE1FB), // 배경색
+        backgroundColor: const Color(0xFFF47599), // 배경색
         body: Stack(
           children: [
             // ✅ 중앙 캐릭터 (정답 판단 X)
