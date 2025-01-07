@@ -1,27 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:minigames/core/colors.dart';
 import 'dart:async';
 import 'dart:math';
-import 'UhWrongPage.dart';
+import '../../core/ScoreManager.dart';
+import '../../core/Timer.dart';
 import 'UhClearPage.dart';
+import 'UhWrongPage.dart';
 
 class UhGamePage extends StatefulWidget {
   final int level; // 난이도: 말풍선의 개수와 표시 시간 조정
-  const UhGamePage({super.key, required this.level});
+  final ScoreManager scoreManager;
+
+  const UhGamePage({super.key, required this.level, required this.scoreManager});
 
   @override
   State<UhGamePage> createState() => _UhGamePageState();
 }
 
-class _UhGamePageState extends State<UhGamePage> {
+class _UhGamePageState extends State<UhGamePage> with SingleTickerProviderStateMixin{
   final List<Map<String, dynamic>> balloons = [];
   final Random random = Random();
   int balloonsCaught = 0;
   int balloonsMissed = 0;
-  late Timer gameTimer;
+  late TimerManager timerManager;
   late Timer balloonTimer;
   int gameDuration = 7; // 총 게임 시간
   late int maxBalloons;
   double balloonDisplayTime = 1.0;
+  late AnimationController _controller;
+  bool _isDisposed = false;
 
   // 캐릭터 위치 정의
   final List<Offset> characterPositions = [
@@ -40,24 +47,41 @@ class _UhGamePageState extends State<UhGamePage> {
   void initState() {
     super.initState();
 
+    // ✅ 애니메이션 컨트롤러 초기화
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+
+    // TimerManager 초기화
+    timerManager = TimerManager(
+      context: context,
+      duration: gameDuration,
+      controller: _controller,
+      onComplete: () {
+        if (mounted) {  // ✅ mounted 체크 추가
+          widget.scoreManager.addPoints(100); // ✅ 100점 추가
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => UhClearPage(level: widget.level)),
+          );
+        }
+      },
+      onUpdate: (timeLeft) {
+        if (mounted) setState(() {});
+      },
+    );
+
     // 난이도에 따른 말풍선 설정
     maxBalloons = 2 + (widget.level ~/ 5); // 레벨 5마다 1씩 증가, 최대 6
     balloonDisplayTime = max(1.0, 2.5 - widget.level * 0.1); // 말풍선 표시 시간
 
+    timerManager.startTimer();
     // 게임 시작
     startGame();
   }
 
   void startGame() {
-    // 게임 타이머 시작
-    gameTimer = Timer(Duration(seconds: gameDuration), () {
-      // 7초 동안 게임 오버가 발생하지 않으면 클리어
-      balloonTimer.cancel(); // 더 이상 말풍선 생성하지 않음
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => UhClearPage(level: widget.level)),
-      );
-    });
 
     // 말풍선 생성 타이머
     balloonTimer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
@@ -170,20 +194,25 @@ class _UhGamePageState extends State<UhGamePage> {
   }
 
   void triggerGameOver() {
-    gameTimer.cancel();
+    // gameTimer.cancel();
     balloonTimer.cancel();
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => UhWrongPage()),
+      MaterialPageRoute(builder: (context) => UhWrongPage(scoreManager: widget.scoreManager)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlueAccent,
+      backgroundColor: AppColors.customBlue,
       body: Stack(
         children: [
+          Positioned(
+            top: 20,
+            left: 0,
+            child: buildProgressBar(timerManager.timeLeft, gameDuration),
+          ),
           // 상단 문구 표시
           Positioned(
             top: 60,
@@ -247,73 +276,11 @@ class _UhGamePageState extends State<UhGamePage> {
 
   @override
   void dispose() {
-    gameTimer.cancel();
-    balloonTimer.cancel();
+    _isDisposed = true; // ✅ Dispose 플래그 설정
+    timerManager.dispose(); // ✅ 타이머 해제
+    balloonTimer.cancel(); // ✅ 타이머 해제
+    _controller.dispose(); // ✅ 애니메이션 컨트롤러 해제
     super.dispose();
   }
 }
 
-class UhWrongPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Wrong Page",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const UhGamePage(level: 1), // 초기 레벨로 다시 시작
-                  ),
-                );
-              },
-              child: const Text("다시하기"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class UhClearPage extends StatelessWidget {
-  final int level;
-  const UhClearPage({required this.level});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Clear Page - Level: $level",
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UhGamePage(level: level + 1), // 다음 레벨로 진행
-                  ),
-                );
-              },
-              child: const Text("다시하기"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

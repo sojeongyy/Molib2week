@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'package:minigames/features/Home/widgets/play_button.dart';
 import '../../core/ScoreManager.dart';
 import '../BugGame/BugGamePage.dart';
+import '../UhWordGame/UhGamePage.dart';
 import 'widgets/scoreboard.dart';
 import 'widgets/background_image.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
@@ -20,7 +21,7 @@ final ScoreManager scoreManager = ScoreManager();
 
 // ✅ 게임을 성공 후 RoundPage를 거쳐 랜덤 게임 시작 (mounted 체크 추가)
 void startRandomGame(BuildContext context, int roundNumber, int level) {
-  final randomIndex = Random().nextInt(3); // ✅ 3개의 게임을 랜덤으로 선택 (0, 1, 2)
+  final randomIndex = Random().nextInt(4); // ✅ 3개의 게임을 랜덤으로 선택 (0, 1, 2)
 
   // ✅ 기존 페이지를 닫고 랜덤으로 새로운 게임 시작
   Navigator.pushReplacement(
@@ -34,6 +35,8 @@ void startRandomGame(BuildContext context, int roundNumber, int level) {
             return RunGamePage(level: level, scoreManager: scoreManager);
           case 2:
             return BugGamePage(level: level, scoreManager: scoreManager);
+          case 3:
+            return UhGamePage(level: level, scoreManager: scoreManager);
           default:
             return BugGamePage(level: level, scoreManager: scoreManager);
         }

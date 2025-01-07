@@ -104,6 +104,8 @@ flutter:
     - assets/images/person_with_pc_4.png
     - assets/images/person_with_pc_5.png
     - assets/images/person_with_pc_6.png
+    - assets/images/Uh_image.jpg
+    - assets/images/Uh_success.png
 
     - assets/vectors/setting.svg
     - assets/vectors/user.svg
