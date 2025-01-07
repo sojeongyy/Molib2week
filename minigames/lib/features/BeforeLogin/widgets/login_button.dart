@@ -32,7 +32,7 @@ class LoginButton extends StatelessWidget {
           elevation: 0, // ✅ 기본 elevation 제거
         ),
         child: const Text(
-          'login',
+          'LOGIN',
           style: TextStyle(fontSize: 32, color: AppColors.almostWhite),
         ),
       ),

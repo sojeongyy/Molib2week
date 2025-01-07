@@ -13,6 +13,8 @@ class BeforeLoginPage extends StatefulWidget {
 class _BeforeLoginPageState extends State<BeforeLoginPage> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation; // ✅ 애니메이션 값 정의
+  late Animation<double> _textAnimation;   // ✅ 텍스트 이동 애니메이션
+
 
   @override
   void initState() {
@@ -23,7 +25,15 @@ class _BeforeLoginPageState extends State<BeforeLoginPage> with SingleTickerProv
       duration: const Duration(seconds: 1), // 애니메이션 속도
     )..forward(); // ✅ 애니메이션 자동 실행
 
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+    // ✅ 타이틀 애니메이션 (완료 후 텍스트 시작)
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: const Interval(0.0, 0.7, curve: Curves.easeInOut)),
+    );
+
+    // ✅ 텍스트 애니메이션 (title 완전히 나타난 후 등장)
+    _textAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: const Interval(0.8, 1.0, curve: Curves.easeInOut)),
+    );
   }
 
   @override
@@ -62,15 +72,42 @@ class _BeforeLoginPageState extends State<BeforeLoginPage> with SingleTickerProv
                 },
               ),
               const SizedBox(height: 30), // 20만큼의 여백
-              Text(
-                'GONGDAE VERSION', // ✅ 추가된 부제목
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 24, // ✅ 작은 크기
-                  fontWeight: FontWeight.w500, // ✅ 중간 두께
-                  color: Colors.black87,
-                  fontFamily: 'cooper-bold-bt',
-                ),
+              // Text(
+              //   'GONGDAE VERSION', // ✅ 추가된 부제목
+              //   textAlign: TextAlign.center,
+              //   style: TextStyle(
+              //     fontSize: 24, // ✅ 작은 크기
+              //     fontWeight: FontWeight.w500, // ✅ 중간 두께
+              //     color: Colors.black87,
+              //     fontFamily: 'cooper-bold-bt',
+              //   ),
+              // ),
+              // ✅ GONGDAE VERSION 텍스트가 서서히 밑에서 등장 (Gradient로 조절)
+              AnimatedBuilder(
+                animation: _textAnimation,
+                builder: (context, child) {
+                  return ShaderMask(
+                    shaderCallback: (Rect bounds) {
+                      return LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [Colors.white, Colors.white.withOpacity(0)],
+                        stops: [_textAnimation.value, _textAnimation.value],
+                      ).createShader(bounds);
+                    },
+                    blendMode: BlendMode.dstIn,
+                    child: const Text(
+                      'GONGDAE VERSION',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black87,
+                        fontFamily: 'cooper-bold-bt',
+                      ),
+                    ),
+                  );
+                },
               ),
               // 로그인 버튼 가운데 정렬
               const SizedBox(height: 60),

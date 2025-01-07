@@ -18,34 +18,65 @@ class KakaoButton extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min, // ✅ 버튼을 내용 크기에 맞춤
       children: [
-        if (!isKakaoLinked) // ✅ 카카오 연동 버튼
-          ElevatedButton(
-            onPressed: onKakaoLink,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.customYellow,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
+        // ✅ 카카오 연동 버튼 (그림자 추가)
+        if (!isKakaoLinked)
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: AppColors.customYellow,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2), // ✅ 그림자 색상
+                  offset: const Offset(0, 3),           // ✅ 그림자 위치
+                  spreadRadius: 2,                     // ✅ 퍼짐 정도
+                ),
+              ],
             ),
-            child: const Text(
-              '카카오 연동하기',
-              style: TextStyle(fontSize: 18, color: Colors.white),
+            child: ElevatedButton(
+              onPressed: onKakaoLink,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent, // ✅ 색상 투명 (DecoratedBox로 설정)
+                elevation: 0, // ✅ 버튼 자체의 기본 그림자 제거
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              child: const Text(
+                'LINK KAKAO',
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
             ),
           ),
-        if (isKakaoLinked) // ✅ 카카오 연결 해제 버튼
-          ElevatedButton(
-            onPressed: onKakaoUnlink,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.customYellow,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
+        const SizedBox(height: 10), // 버튼 간 여백 추가
+        // ✅ 카카오 연결 해제 버튼 (그림자 추가)
+        if (isKakaoLinked)
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: AppColors.customYellow,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  offset: const Offset(0, 3),
+                  spreadRadius: 2,
+                ),
+              ],
             ),
-            child: const Text(
-              '카카오 연결 끊기',
-              style: TextStyle(fontSize: 18, color: Colors.white),
+            child: ElevatedButton(
+              onPressed: onKakaoUnlink,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                elevation: 0, // ✅ 기본 그림자 제거
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              child: const Text(
+                'UNLINK KAKAO',
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
             ),
           ),
       ],
