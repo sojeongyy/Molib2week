@@ -145,7 +145,8 @@ class _SignInPageState extends State<SignInPage> {
           title: const Text('Sign Up'),
           backgroundColor: AppColors.almostWhite,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
+      child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -185,7 +186,7 @@ class _SignInPageState extends State<SignInPage> {
               controller: _nicknameController,
               decoration: const InputDecoration(labelText: '닉네임'),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 100),
             // ElevatedButton(
             //   onPressed: register,
             //   child: const Text('회원가입'),
@@ -194,6 +195,7 @@ class _SignInPageState extends State<SignInPage> {
             SignInButton(onPressed: register)
           ],
         ),
+      ),
       ),
     );
   }
