@@ -196,17 +196,20 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _showProfilePopup() {
+  void _showProfilePopup(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => ProfilePopupPage(
-        nickname: nickname,
-        isKakaoLinked: isKakaoLinked,
-        onKakaoLink: () => _linkKakao(context),
-        onKakaoUnlink: () => _unlinkKakao(context),
-      ),
+      builder: (BuildContext context) {
+        return ProfilePopupPage(
+          nickname: nickname,
+          isKakaoLinked: isKakaoLinked,
+          onKakaoLink: () => _linkKakao(context),
+          onKakaoUnlink: () => _unlinkKakao(context),
+        );
+      },
     );
   }
+
 
 
 // class HomePage extends StatelessWidget {
@@ -239,7 +242,7 @@ class _HomePageState extends State<HomePage> {
             top: 40,
             right: 70,
             child: GestureDetector(
-              onTap: _showProfilePopup, // 프로필 팝업 표시
+              onTap: () => _showProfilePopup(context), // 프로필 팝업 표시
               child: SvgPicture.asset(
                 'assets/vectors/user.svg',
                 width: 40,
