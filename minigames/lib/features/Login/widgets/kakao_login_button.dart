@@ -10,11 +10,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class KakaoLoginButton extends StatelessWidget {
   const KakaoLoginButton({Key? key}) : super(key: key);
 
-  Future<void> _saveUserData(String userId, String nickname, bool isKakaoLinked) async {
+  Future<void> _saveUserData(String userId, String nickname, bool isKakaoLinked, String profileImageUrl) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userId', userId);
     await prefs.setString('nickname', nickname);
     await prefs.setBool('isKakaoLinked', isKakaoLinked);
+    await prefs.setString('profileImageUrl', profileImageUrl);
   }
 
   Future<void> _loginWithKakao(BuildContext context) async {
@@ -32,15 +33,19 @@ class KakaoLoginButton extends StatelessWidget {
       User user = await UserApi.instance.me();
       String? nickname = user.kakaoAccount?.profile?.nickname;
       int kakaoId = user.id; // 카카오 고유 ID
+      String? profileImageUrl = user.kakaoAccount?.profile?.profileImageUrl; // 프로필 이미지 URL (회원가입 시 사용)
+
       print('사용자 닉네임: $nickname');
       print('카카오 고유 ID: $kakaoId');
+      print('프로필 이미지 URL: $profileImageUrl');
+
       final apiUrl = dotenv.env['API_URL'] ?? 'http://localhost:3000';
 
       // 서버로 로그인 요청
       final response = await http.post(
         Uri.parse('$apiUrl/kakao/login'),
         headers: {'Content-Type': 'application/json'},
-        body: json.encode({'kakaoId': kakaoId.toString()}),
+        body: json.encode({'kakaoId': kakaoId.toString()}), // 로그인에 프로필 사진 전달하지 않음
       );
 
       if (response.statusCode == 200) {
@@ -53,7 +58,7 @@ class KakaoLoginButton extends StatelessWidget {
         final userId = data['user']['username'];
 
         // 유저 정보 저장
-        await _saveUserData(userId, nickname, isKakaoLinked);
+        await _saveUserData(userId, nickname, isKakaoLinked, profileImageUrl ?? '');
 
         // 홈 화면으로 이동
         Navigator.pushReplacement(
@@ -76,6 +81,7 @@ class KakaoLoginButton extends StatelessWidget {
             builder: (context) => SignInPage(
               kakaoId: kakaoId.toString(),
               defaultNickname: nickname ?? '사용자',
+              profileImageUrl: profileImageUrl ?? '', // 회원가입 시 프로필 사진 전달
             ),
           ),
         );

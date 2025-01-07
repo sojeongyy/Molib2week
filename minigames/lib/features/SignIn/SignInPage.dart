@@ -8,9 +8,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SignInPage extends StatefulWidget {
   final String? kakaoId; // 카카오 ID
   final String? defaultNickname; // 카카오 닉네임 (초기값)
+  final String? profileImageUrl; // 카카오 프로필 이미지 URL
 
-  const SignInPage({Key? key, this.kakaoId, this.defaultNickname})
-      : super(key: key);
+  const SignInPage({
+    Key? key,
+    this.kakaoId,
+    this.defaultNickname,
+    this.profileImageUrl,
+  }) : super(key: key);
 
   @override
   _SignInPageState createState() => _SignInPageState();
@@ -55,16 +60,17 @@ class _SignInPageState extends State<SignInPage> {
 
     final requestBody = widget.kakaoId != null
         ? {
-            "kakaoId": widget.kakaoId,
-            "username": _usernameController.text,
-            "password": _passwordController.text,
-            "nickname": _nicknameController.text,
-          }
+      "kakaoId": widget.kakaoId,
+      "username": _usernameController.text,
+      "password": _passwordController.text,
+      "nickname": _nicknameController.text,
+      "profileImageUrl": widget.profileImageUrl ?? '', // 프로필 이미지 URL 추가
+    }
         : {
-            "username": _usernameController.text,
-            "password": _passwordController.text,
-            "nickname": _nicknameController.text,
-          };
+      "username": _usernameController.text,
+      "password": _passwordController.text,
+      "nickname": _nicknameController.text,
+    };
 
     try {
       // 회원가입 요청
@@ -131,6 +137,13 @@ class _SignInPageState extends State<SignInPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            if (widget.profileImageUrl != null && widget.profileImageUrl!.isNotEmpty)
+              Column(
+                children: [
+                  Image.network(widget.profileImageUrl!, width: 100, height: 100),
+                  const SizedBox(height: 10),
+                ],
+              ),
             TextField(
               controller: _usernameController,
               decoration: const InputDecoration(labelText: '아이디'),

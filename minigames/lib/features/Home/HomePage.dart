@@ -211,22 +211,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          // Positioned(
-          //   bottom: 10,
-          //   left: 30,
-          //   child: Image.asset(
-          //     'assets/images/brown_person.png',
-          //     width: 150,
-          //   ),
-          // ),
-          // Positioned(
-          //   bottom: 20,
-          //   right: 30,
-          //   child: Image.asset(
-          //     'assets/images/yellow_person.png',
-          //     width: 150,
-          //   ),
-          // ),
           Positioned(
             top: 30,
             right: 70,
