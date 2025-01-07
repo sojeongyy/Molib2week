@@ -23,22 +23,22 @@ class LoginPage extends StatelessWidget {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(height: 110),
+                  const SizedBox(height: 100),
                   Center(  // 텍스트도 가운데 정렬
                     child: Image.asset('assets/images/title.png', width: 300),
                   ),
-                  // 제목 텍스트
-                  // const Text(
-                  //   'DUMB WAYS\nTO DIE',
-                  //   textAlign: TextAlign.center,
-                  //   style: TextStyle(
-                  //     fontSize: 50,
-                  //     fontWeight: FontWeight.bold,
-                  //     color: Colors.black,
-                  //     height: 1
-                  //   ),
-                  // ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 30), // 20만큼의 여백
+                  Text(
+                    'GONGDAE VERSION', // ✅ 추가된 부제목
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 24, // ✅ 작은 크기
+                      fontWeight: FontWeight.w500, // ✅ 중간 두께
+                      color: Colors.black87,
+                      fontFamily: 'cooper-bold-bt',
+                    ),
+                  ),
+                  const SizedBox(height: 40),
 
                   // 로그인 폼 (아이디/비밀번호 입력)
                   LoginForm(
@@ -60,17 +60,6 @@ class LoginPage extends StatelessWidget {
               ),
             ),
 
-            // 캐릭터 이미지 (하단 중앙 고정)
-            // Align(
-            //   alignment: Alignment.bottomCenter, // 하단 중앙에 고정
-            //   child: Padding(
-            //     padding: const EdgeInsets.only(bottom: 20),
-            //     child: Image.asset(
-            //       'assets/images/blue_person.png',
-            //       width: 150,
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

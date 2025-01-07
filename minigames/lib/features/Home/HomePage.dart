@@ -228,7 +228,7 @@ class _HomePageState extends State<HomePage> {
           //   ),
           // ),
           Positioned(
-            top: 30,
+            top: 40,
             right: 70,
             child: GestureDetector(
               onTap: () => _showProfilePopup(context), // 프로필 팝업 표시
@@ -239,7 +239,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Positioned(
-            top: 30,
+            top: 40,
             right: 20,
             child: SvgPicture.asset(
               'assets/vectors/setting.svg',
