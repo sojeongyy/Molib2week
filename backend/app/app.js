@@ -3,6 +3,7 @@ const app = express();
 require('dotenv').config();
 
 const authRoutes = require('./routes/auth'); // routes/auth.js 연결
+const scoreRoutes = require('./routes/score'); // routes/score.js 연결
 const pool = require('./db'); // db.js에서 MySQL 연결 가져오기
 
 // Middleware
@@ -21,6 +22,7 @@ app.get('/test-db', async (req, res) => {
 
 // Routes
 app.use('/auth', authRoutes); // auth.js 라우터 사용
+app.use('/score', scoreRoutes); // score.js 라우터 사용
 
 // Start server
 const PORT = process.env.PORT || 3000;

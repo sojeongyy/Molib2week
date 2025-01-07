@@ -94,6 +94,12 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
         _controller.stop();
         timerManager.cancelTimer();
       });
+
+      // ✅ 남은 시간 읽기
+      double timeElapsed = gameDuration - timerManager.timeLeft;
+      double additionalPoints = 100 * (timeElapsed / gameDuration);
+      widget.scoreManager.addPoints(additionalPoints.round());
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => CollisionPage(scoreManager: widget.scoreManager)),
