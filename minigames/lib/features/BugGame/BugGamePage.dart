@@ -55,6 +55,14 @@ class _BugGamePageState extends State<BugGamePage> with SingleTickerProviderStat
         if (mounted && !_isDisposed) {
           _isDisposed = true; // ✅ 중복 방지
           _controller.stop();
+
+          // ✅ 점수 계산
+          int bugsCaught = bugCaught.where((caught) => caught).length;
+          int totalBugs = bugCaught.length;
+          double scoreRatio = bugsCaught / totalBugs;
+          int additionalPoints = (100 * scoreRatio).round(); // ✅ 점수 계산 후 반올림
+          widget.scoreManager.addPoints(additionalPoints);
+
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => BugRemainPage(scoreManager: widget.scoreManager)),
