@@ -79,6 +79,11 @@ class _MyAppState extends State<MyApp> {
             overlayColor: Colors.transparent,
           ),
         ),
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: AppColors.customBlue,
+          selectionColor: AppColors.customBlue,
+          selectionHandleColor: AppColors.customBlue,
+        ),
       ),
 
       // 첫 화면 설정
