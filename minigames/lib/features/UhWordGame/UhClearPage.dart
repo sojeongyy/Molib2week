@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:minigames/core/colors.dart';
+import '../../core/BackgroundMusicManager.dart';
 import '../../core/NextButton.dart';
 
 class UhClearPage extends StatelessWidget {
@@ -9,6 +10,11 @@ class UhClearPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BackgroundMusicPage.play(assetPath: 'audios/clap.mp3');  // ✅ 배경음악 재개
+    });
+
     return Scaffold(
       backgroundColor: AppColors.customBlue, // 배경색
       body: Stack(
@@ -23,6 +29,15 @@ class UhClearPage extends StatelessWidget {
           ),
           Center(
             child: NextButton(level: level),
+          ),
+          Positioned(
+            bottom: 100,  // 아래쪽 여백
+            right: 20,   // 오른쪽 여백
+            child: Image.asset(
+              'assets/images/mom.jpeg', // 추가할 이미지 경로
+              width: 200,       // 이미지 너비
+              fit: BoxFit.contain, // 이미지 비율 유지
+            ),
           ),
         ],
       ),

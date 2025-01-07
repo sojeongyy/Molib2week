@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/BackgroundMusicManager.dart';
 import '../../../core/ScoreManager.dart';
 import '../../../core/colors.dart';
 import '../../Home/HomePage.dart';
@@ -65,6 +66,7 @@ class Buttons extends StatelessWidget {
           ),
           child: ElevatedButton(
             onPressed: () {
+              BackgroundMusicPage.stop();
               scoreManager.resetScore();
               startRandomGame(context, 1, 1);
             },

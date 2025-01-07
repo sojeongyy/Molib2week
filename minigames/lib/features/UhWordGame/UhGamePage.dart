@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:minigames/core/colors.dart';
 import 'dart:async';
@@ -29,6 +30,9 @@ class _UhGamePageState extends State<UhGamePage> with SingleTickerProviderStateM
   double balloonDisplayTime = 1.0;
   late AnimationController _controller;
   bool _isDisposed = false;
+
+  // ✅ 오디오 플레이어 추가
+  final AudioPlayer _audioPlayer = AudioPlayer();
 
   // 캐릭터 위치 정의
   final List<Offset> characterPositions = [
@@ -81,8 +85,17 @@ class _UhGamePageState extends State<UhGamePage> with SingleTickerProviderStateM
     startGame();
   }
 
-  void startGame() {
+  // ✅ 음원 재생 메서드 추가
+  Future<void> _playSound(String soundFile) async {
+    try {
+      await _audioPlayer.setSource(AssetSource('audios/$soundFile'));
+      await _audioPlayer.resume();
+    } catch (e) {
+      print("음원 재생 실패: $e");
+    }
+  }
 
+  void startGame() {
     // 말풍선 생성 타이머
     balloonTimer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
       if (balloons.length < maxBalloons) {
@@ -121,12 +134,14 @@ class _UhGamePageState extends State<UhGamePage> with SingleTickerProviderStateM
         "isCorrect": true,
         "duration": 0.7,
       };
+      _playSound('Huk.mp3'); // ✅ "헉!" 사운드 재생
     } else if (probability < 0.5 + specialBalloonProbability) {
       selectedBalloon = {
         "image": "assets/images/Uh.png",
         "isCorrect": true,
         "duration": balloonDisplayTime,
       };
+      _playSound('Uh.mp3'); // ✅ "어?" 사운드 재생
     } else {
       final List<Map<String, dynamic>> otherBalloons = [
         {"image": "assets/images/Oh.png", "isCorrect": false, "duration": balloonDisplayTime},
@@ -280,6 +295,7 @@ class _UhGamePageState extends State<UhGamePage> with SingleTickerProviderStateM
     timerManager.dispose(); // ✅ 타이머 해제
     balloonTimer.cancel(); // ✅ 타이머 해제
     _controller.dispose(); // ✅ 애니메이션 컨트롤러 해제
+    _audioPlayer.dispose(); // ✅ 오디오 플레이어 해제
     super.dispose();
   }
 }

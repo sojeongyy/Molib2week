@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minigames/core/colors.dart';
 
+import '../../core/BackgroundMusicManager.dart';
 import '../../core/ScoreButton.dart';
 import '../../core/ScoreManager.dart';
 
@@ -11,6 +12,11 @@ class UhWrongPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BackgroundMusicPage.play(assetPath: 'audios/fail.mp3');  // ✅ 배경음악 재개
+    });
+
     return Scaffold(
       backgroundColor: AppColors.customBlue, // 배경색
       body: Stack(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/BackgroundMusicManager.dart';
 import '../../core/NextButton.dart';
 import 'widgets/background_image.dart';
 import '../../core/colors.dart';
@@ -21,6 +22,7 @@ class _NotCollisionPageState extends State<NotCollisionPage> with SingleTickerPr
   void initState() {
 
     super.initState(); // ✅ 상태 초기화
+    BackgroundMusicPage.play(assetPath: 'audios/bye.mp3');
 
     // Initialize the character to start from the center of the screen
     WidgetsBinding.instance.addPostFrameCallback((_) {

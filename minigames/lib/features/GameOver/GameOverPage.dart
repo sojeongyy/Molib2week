@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:minigames/core/BackgroundMusicManager.dart';
 import 'package:minigames/features/GameOver/widgets/buttons.dart';
 import 'package:minigames/features/GameOver/widgets/score.dart';
 import '../../core/ScoreManager.dart';
@@ -22,6 +23,11 @@ class GameOverPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BackgroundMusicPage.play();
+    });
+
     return Scaffold(
       body: Stack(
         children: [
@@ -45,26 +51,6 @@ class GameOverPage extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-          ),
-
-          Positioned(
-            top: 40,
-            right: 70,
-            child: GestureDetector(
-              //onTap: () => _showProfilePopup(context), // 프로필 팝업 표시
-              child: SvgPicture.asset(
-                'assets/vectors/user.svg',
-                width: 40,
-              ),
-            ),
-          ),
-          Positioned(
-            top: 40,
-            right: 20,
-            child: SvgPicture.asset(
-              'assets/vectors/setting.svg',
-              width: 40,
             ),
           ),
         ],

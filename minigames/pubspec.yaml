@@ -106,11 +106,23 @@ flutter:
     - assets/images/person_with_pc_6.png
     - assets/images/Uh_image.jpg
     - assets/images/Uh_success.png
+    - assets/images/plane.png
+    - assets/images/mom.jpeg
 
     - assets/vectors/setting.svg
     - assets/vectors/user.svg
     - assets/vectors/heart.svg
+
     - assets/audios/Background.mp3
+    - assets/audios/heart.wav
+    - assets/audios/bug_sound.mp3
+    - assets/audios/fail.mp3
+    - assets/audios/date.mp3
+    - assets/audios/bye.mp3
+    - assets/audios/mosquito.mp3
+    - assets/audios/Uh.mp3
+    - assets/audios/Huk.mp3
+    - assets/audios/clap.mp3
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
