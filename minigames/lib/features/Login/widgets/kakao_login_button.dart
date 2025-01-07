@@ -10,12 +10,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class KakaoLoginButton extends StatelessWidget {
   const KakaoLoginButton({Key? key}) : super(key: key);
 
-  Future<void> _saveUserData(String userId, String nickname, bool isKakaoLinked, String profileImageUrl) async {
+  Future<void> _saveUserData(String userId, String nickname, bool isKakaoLinked, String profileImageUrl, int id) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userId', userId);
     await prefs.setString('nickname', nickname);
     await prefs.setBool('isKakaoLinked', isKakaoLinked);
     await prefs.setString('profileImageUrl', profileImageUrl);
+    await prefs.setInt('id', id);
   }
 
   Future<void> _loginWithKakao(BuildContext context) async {
@@ -56,9 +57,10 @@ class KakaoLoginButton extends StatelessWidget {
         print('로그인 성공: 닉네임=$nickname');
 
         final userId = data['user']['username'];
+        final id = data['user']['id'];
 
         // 유저 정보 저장
-        await _saveUserData(userId, nickname, isKakaoLinked, profileImageUrl ?? '');
+        await _saveUserData(userId, nickname, isKakaoLinked, profileImageUrl ?? '', id);
 
         // 홈 화면으로 이동
         Navigator.pushReplacement(

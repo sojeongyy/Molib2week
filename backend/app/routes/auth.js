@@ -43,6 +43,7 @@ router.post('/login', async (req, res) => {
         username: user.username,
         nickname: user.nickname,
         is_kakao_linked: !!user.is_kakao_linked,
+        profile_image_url: user.profile_image_url,
       },
     });
   } catch (error) {
@@ -119,6 +120,7 @@ router.post('/kakao/login', async (req, res) => {
           username: user.username,
           nickname: user.nickname,
           is_kakao_linked: !!user.is_kakao_linked,
+          profile_image_url: user.profile_image_url,
         },
       });
     }
@@ -197,11 +199,16 @@ router.post('/kakao/link', async (req, res) => {
 
     // 현재 사용자 프로필 이미지 확인
     const [currentUser] = await connection.query(
-      `SELECT profile_image_url FROM users WHERE username = ?`,
+      `SELECT * FROM users WHERE username = ?`,
       [userId]
     );
 
-    let finalProfileImageUrl = currentUser[0]?.profile_image_url;
+    if (!currentUser.length) {
+      connection.release();
+      return res.status(404).json({ message: '유저를 찾을 수 없습니다.' });
+    }
+
+    let finalProfileImageUrl = currentUser[0].profile_image_url;
 
     // 기존 프로필 이미지가 없는 경우에만 카카오 프로필 이미지 사용
     if (!finalProfileImageUrl || finalProfileImageUrl.trim() === '') {
@@ -214,8 +221,24 @@ router.post('/kakao/link', async (req, res) => {
       [kakaoId, finalProfileImageUrl, userId]
     );
 
+    // 업데이트된 사용자 정보 가져오기
+    const [updatedUser] = await connection.query(
+      `SELECT * FROM users WHERE username = ?`,
+      [userId]
+    );
+
     connection.release();
-    res.status(200).json({ message: '카카오 연동이 완료되었습니다.' });
+    res.status(200).json({
+      message: '카카오 연동이 완료되었습니다.',
+      user: {
+        id: updatedUser[0].id,
+        kakaoId: updatedUser[0].kakao_id,
+        username: updatedUser[0].username,
+        nickname: updatedUser[0].nickname,
+        is_kakao_linked: !!updatedUser[0].is_kakao_linked,
+        profile_image_url: updatedUser[0].profile_image_url,
+      },
+    });
   } catch (error) {
     console.error('카카오 연동 오류:', error);
     res.status(500).json({ message: '서버 오류가 발생했습니다.' });
@@ -239,12 +262,28 @@ router.post('/kakao/unlink', async (req, res) => {
       [userId]
     );
 
+    // 업데이트된 사용자 정보 가져오기
+    const [updatedUser] = await connection.query(
+      `SELECT * FROM users WHERE username = ?`,
+      [userId]
+    );
+
     connection.release();
-    res.status(200).json({ message: '카카오 연결이 해제되었습니다.' });
+    res.status(200).json({
+      message: '카카오 연결이 해제되었습니다.',
+      user: {
+        id: updatedUser[0].id,
+        username: updatedUser[0].username,
+        nickname: updatedUser[0].nickname,
+        is_kakao_linked: !!updatedUser[0].is_kakao_linked,
+        profile_image_url: updatedUser[0].profile_image_url,
+      },
+    });
   } catch (error) {
     console.error('카카오 연결 해제 오류:', error);
     res.status(500).json({ message: '서버 오류가 발생했습니다.' });
   }
 });
+
 
 module.exports = router;
