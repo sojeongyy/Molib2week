@@ -58,11 +58,24 @@ class _MyAppState extends State<MyApp> {
 
       // 앱 전체 테마 설정 (app_colors.dart 활용)
       theme: ThemeData(
-        primaryColor: AppColors.softBlue,  // 기본 색상 설정
+        primaryColor: AppColors.customBlue,  // 기본 색상 설정
         scaffoldBackgroundColor: AppColors.almostWhite,  // 배경색
         fontFamily: 'cooper-bold-bt', // 기본 폰트 설정
         textTheme: const TextTheme(
           bodyLarge: TextStyle(color: Colors.black),
+        ),
+
+        inputDecorationTheme: InputDecorationTheme(
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 2, color: AppColors.customBlue),
+          ),
+        ),
+
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.black,
+            overlayColor: Colors.transparent,
+          ),
         ),
       ),
 

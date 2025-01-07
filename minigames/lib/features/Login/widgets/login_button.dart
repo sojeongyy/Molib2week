@@ -115,11 +115,11 @@ class LoginButton extends StatelessWidget {
           onPressed: () {
             print("로그인 버튼 클릭");
             // HomePage로 이동
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => HomePage()),
-            // );
-            login(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+            //login(context);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.customBlue,
