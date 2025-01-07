@@ -16,12 +16,13 @@ class LoginButton extends StatelessWidget {
     required this.passwordController,
   });
 
-  Future<void> _saveUserData(String userId, String nickname, bool isKakaoLinked, String profileImageUrl) async {
+  Future<void> _saveUserData(String userId, String nickname, bool isKakaoLinked, String profileImageUrl, int id) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userId', userId);
     await prefs.setString('nickname', nickname);
     await prefs.setBool('isKakaoLinked', isKakaoLinked);
     await prefs.setString('profileImageUrl', profileImageUrl);
+    await prefs.setInt('id', id);
   }
 
   Future<void> login(BuildContext context) async {
@@ -57,9 +58,10 @@ class LoginButton extends StatelessWidget {
         final nickname = data['user']['nickname'];
         final isKakaoLinked = data['user']['is_kakao_linked'];
         final profileImageUrl = data['user']['profile_image_url'] ?? '';
+        final id = data['user']['id'];
 
         // 유저 정보 저장
-        await _saveUserData(userId, nickname, isKakaoLinked, profileImageUrl);
+        await _saveUserData(userId, nickname, isKakaoLinked, profileImageUrl, id);
 
         // 로그인 성공 시 홈 화면으로 이동
         Navigator.push(

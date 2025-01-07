@@ -10,6 +10,8 @@ import '../../core/ScoreManager.dart';
 import '../BugGame/BugGamePage.dart';
 import '../UhWordGame/UhGamePage.dart';
 import 'widgets/scoreboard.dart';
+import '../GameOver/widgets/score.dart';
+import '../../core/ScoreManager.dart';
 import 'widgets/background_image.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'widgets/profilePopup.dart';
@@ -133,6 +135,8 @@ class _HomePageState extends State<HomePage> {
         }),
       );
 
+      final loginData = json.decode(response.body);
+
       if (response.statusCode == 200) {
         setState(() {
           isKakaoLinked = true;
@@ -144,7 +148,8 @@ class _HomePageState extends State<HomePage> {
 
         // SharedPreferences 업데이트
         final prefs = await SharedPreferences.getInstance();
-        prefs.setBool('isKakaoLinked', true);
+        prefs.setBool('isKakaoLinked', loginData['user']['isKakaoLinked'] ?? false);
+        prefs.setString('profileImageUrl', loginData['user']['profile_image_url']);
       } else {
         final error = json.decode(response.body)['message'];
         ScaffoldMessenger.of(context).showSnackBar(
@@ -215,8 +220,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
-
 // class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -230,7 +233,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Scoreboard(scores: [720, 700, 600]),
+                  Scoreboard(),
                   const SizedBox(height: 50),
                   PlayButton(
                     onPressed: () {

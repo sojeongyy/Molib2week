@@ -196,6 +196,15 @@ class _UhGamePageState extends State<UhGamePage> with SingleTickerProviderStateM
   void triggerGameOver() {
     // gameTimer.cancel();
     balloonTimer.cancel();
+
+    // ✅ 진행 시간 계산
+    double elapsedTime = gameDuration - timerManager.timeLeft;
+    double progressRatio = elapsedTime / gameDuration;
+    int additionalPoints = (100 * progressRatio).round(); // ✅ 점수 계산 및 반올림
+
+    // ✅ 점수 추가
+    widget.scoreManager.addPoints(additionalPoints);
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => UhWrongPage(scoreManager: widget.scoreManager)),

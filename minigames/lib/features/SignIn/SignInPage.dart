@@ -48,11 +48,13 @@ class _SignInPageState extends State<SignInPage> {
     super.dispose();
   }
 
-  Future<void> _saveUserData(String userId, String nickname, bool isKakaoLinked) async {
+  Future<void> _saveUserData(String userId, String nickname, bool isKakaoLinked, String profileImageUrl, int id) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userId', userId);
     await prefs.setString('nickname', nickname);
     await prefs.setBool('isKakaoLinked', isKakaoLinked);
+    await prefs.setString('profileImageUrl', profileImageUrl);
+    await prefs.setInt('id', id);
   }
 
   Future<void> register() async {
@@ -110,9 +112,11 @@ class _SignInPageState extends State<SignInPage> {
 
           final userId = loginData['user']['username'];
           final isKakaoLinked = loginData['user']['is_kakao_linked'];
+          final profileImageUrl = loginData['user']['profile_image_url'] ?? '';
+          final id = loginData['user']['id'];
 
           // 유저 정보 저장
-          await _saveUserData(userId, nickname, isKakaoLinked);
+          await _saveUserData(userId, nickname, isKakaoLinked, profileImageUrl, id);
 
           // 홈 화면으로 이동
           Navigator.pushReplacement(
