@@ -1,50 +1,29 @@
-import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-class BackgroundMusicPage extends StatefulWidget {
-  const BackgroundMusicPage({super.key});
+class BackgroundMusicPage {
+  static final AudioPlayer _audioPlayer = AudioPlayer(); // ✅ 전역 인스턴스
+  static bool _isPlaying = false; // ✅ 재생 여부
 
-  @override
-  State<BackgroundMusicPage> createState() => _BackgroundMusicPageState();
-}
-
-class _BackgroundMusicPageState extends State<BackgroundMusicPage> {
-  final AudioPlayer _audioPlayer = AudioPlayer();
-
-  @override
-  void initState() {
-    super.initState();
-    _playBackgroundMusic();  // 앱 실행 시 배경음악 재생
+  // ✅ 배경음악 재생 (어디서든 호출 가능)
+  static Future<void> play({String? assetPath}) async {
+    await stop(); // ✅ 기존 음악 중지 후 재생
+    if (assetPath != null) {
+      await _audioPlayer.setSource(AssetSource(assetPath));
+    } else {
+      await _audioPlayer.setSource(AssetSource('audios/Background.mp3'));
+    }
+    await _audioPlayer.setReleaseMode(ReleaseMode.loop);
+    await _audioPlayer.resume();
+    _isPlaying = true;
   }
 
-  // 배경음악 반복 재생
-  void _playBackgroundMusic() async {
-    await _audioPlayer.setSource(AssetSource('../../assets/audios/Background.mp3'));
-    _audioPlayer.setReleaseMode(ReleaseMode.loop);  // 반복 재생 모드 설정
-    _audioPlayer.play(AssetSource('../../assets/audios/Background.mp3'));
+  // ✅ 배경음악 정지 (어디서든 호출 가능)
+  static Future<void> stop() async {
+    await _audioPlayer.stop();
   }
 
-  @override
-  void dispose() {
-    _audioPlayer.dispose();  // 앱 종료 시 메모리 해제
-    super.dispose();
+  // ✅ 오디오 플레이어 해제
+  static void dispose() {
+    _audioPlayer.dispose();
   }
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     body: Center(
-  //       child: Text(
-  //         '배경음악이 반복 재생 중입니다!',
-  //         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-  //       ),
-  //     ),
-  //   );
-  // }
 }

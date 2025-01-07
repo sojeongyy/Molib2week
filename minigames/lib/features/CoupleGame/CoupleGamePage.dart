@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:minigames/features/CoupleGame/InCorrectPage.dart';
+import '../../core/BackgroundMusicManager.dart';
 import '../../core/ScoreManager.dart';
 import '../../core/Timer.dart';
 import 'CorrectPage.dart';
@@ -25,7 +26,7 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
   @override
   void initState() {
     super.initState();
-
+    BackgroundMusicPage.play(assetPath: 'audios/date.mp3');
     // ✅ 애니메이션 컨트롤러 초기화
     _controller = AnimationController(
       vsync: this,

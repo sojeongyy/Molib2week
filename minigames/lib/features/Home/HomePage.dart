@@ -1,6 +1,8 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:minigames/core/BackgroundMusicManager.dart';
 import 'package:minigames/features/Home/widgets/profile_popup_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -54,39 +56,37 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
   String nickname = '';
   bool isKakaoLinked = false;
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
-  void _navigateToProfilePage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ProfilePopupPage(
-          nickname: nickname,
-          isKakaoLinked: isKakaoLinked,
-          onKakaoLink: () {
-            setState(() {
-              isKakaoLinked = true;
-            });
-            Navigator.pop(context); // 카카오 연동 완료 후 뒤로 가기
-          },
-          onKakaoUnlink: () {
-            setState(() {
-              isKakaoLinked = false;
-            });
-            Navigator.pop(context); // 카카오 연결 해제 후 뒤로 가기
-          },
-        ),
-      ),
-    );
-  }
+  //final AudioPlayer _pageAudioPlayer = AudioPlayer();
 
   @override
   void initState() {
     super.initState();
     _loadUserData();
+    // ✅ 비행기 애니메이션 컨트롤러 설정
+    _controller = AnimationController(
+      duration: const Duration(seconds: 5), // 5초 동안 이동
+      vsync: this,
+    )..repeat(); // 반복 실행
+
+    // ✅ 오른쪽에서 왼쪽으로 이동하는 애니메이션
+    _animation = Tween<double>(
+      begin: 1.0,  // 화면 오른쪽 바깥
+      end: -1.0,   // 화면 왼쪽 바깥
+    ).animate(_controller);
   }
+
+  @override
+  void dispose() {
+    _controller.dispose(); // 애니메이션 컨트롤러 해제
+    super.dispose();
+  }
+
 
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
@@ -238,6 +238,7 @@ class _HomePageState extends State<HomePage> {
                   PlayButton(
                     onPressed: () {
                       startRandomGame(context, 1, 1);
+                      BackgroundMusicPage.stop();
                     },
                     scoreManager: scoreManager, // ✅ 점수 매니저 전달
                   ),
@@ -245,7 +246,20 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-
+          // ✅ 비행기 애니메이션 추가
+          AnimatedBuilder(
+            animation: _animation,
+            builder: (context, child) {
+              return Positioned(
+                top: 110, // ✅ 스코어보드 바로 위쪽
+                left: MediaQuery.of(context).size.width * _animation.value, // 오른쪽에서 왼쪽으로
+                child: Image.asset(
+                  'assets/images/plane.png',
+                  width: 300,
+                ),
+              );
+            },
+          ),
           Positioned(
             top: 40,
             right: 70,

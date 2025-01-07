@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/BackgroundMusicManager.dart';
 import '../../core/ScoreButton.dart';
 import '../../core/ScoreManager.dart';
 
@@ -9,6 +10,11 @@ class InCorrectPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BackgroundMusicPage.play(assetPath: 'audios/fail.mp3');  // ✅ 배경음악 재개
+    });
+
     return Scaffold(
         backgroundColor: const Color(0xFFF47599), // 배경색
         body: Stack(

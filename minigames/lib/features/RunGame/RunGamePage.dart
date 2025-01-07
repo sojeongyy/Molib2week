@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:minigames/core/BackgroundMusicManager.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:minigames/features/RunGame/CollisionPage.dart';
 import 'package:minigames/features/RunGame/NotCollisionPage.dart';
+import '../../core/BGMPlayer.dart';
 import '../../core/ScoreManager.dart';
 import '../../core/Timer.dart';
 
@@ -34,6 +36,8 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
+    BackgroundMusicPage.play(assetPath: 'audios/heart.wav');
+
     speed += widget.level * 50;
     _controller = AnimationController(
       vsync: this,

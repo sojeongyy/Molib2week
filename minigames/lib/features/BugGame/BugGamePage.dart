@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import '../../core/BackgroundMusicManager.dart';
 import '../../core/ScoreManager.dart';
 import '../../core/Timer.dart';
 import 'BugRemainPage.dart';
@@ -28,6 +29,7 @@ class _BugGamePageState extends State<BugGamePage> with SingleTickerProviderStat
 
   @override
   void initState() {
+    BackgroundMusicPage.play(assetPath: 'audios/bug_sound.mp3');
     // ✅ 애니메이션 컨트롤러 초기화
     _controller = AnimationController(
       vsync: this,
@@ -176,6 +178,7 @@ class _BugGamePageState extends State<BugGamePage> with SingleTickerProviderStat
       _isDisposed = true; // ✅ 중복 방지
       timerManager.dispose();
       _controller.dispose();
+      BackgroundMusicPage.stop();
     }
     super.dispose();
   }
