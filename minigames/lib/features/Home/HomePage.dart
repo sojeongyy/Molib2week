@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:minigames/features/Home/widgets/profile_popup_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:minigames/features/Home/widgets/play_button.dart';
 import '../../core/ScoreManager.dart';
 import '../BugGame/BugGamePage.dart';
+import '../UhWordGame/UhGamePage.dart';
 import 'widgets/scoreboard.dart';
 import 'widgets/background_image.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
@@ -19,7 +21,7 @@ final ScoreManager scoreManager = ScoreManager();
 
 // ✅ 게임을 성공 후 RoundPage를 거쳐 랜덤 게임 시작 (mounted 체크 추가)
 void startRandomGame(BuildContext context, int roundNumber, int level) {
-  final randomIndex = Random().nextInt(3); // ✅ 3개의 게임을 랜덤으로 선택 (0, 1, 2)
+  final randomIndex = Random().nextInt(4); // ✅ 3개의 게임을 랜덤으로 선택 (0, 1, 2)
 
   // ✅ 기존 페이지를 닫고 랜덤으로 새로운 게임 시작
   Navigator.pushReplacement(
@@ -33,6 +35,8 @@ void startRandomGame(BuildContext context, int roundNumber, int level) {
             return RunGamePage(level: level, scoreManager: scoreManager);
           case 2:
             return BugGamePage(level: level, scoreManager: scoreManager);
+          case 3:
+            return UhGamePage(level: level, scoreManager: scoreManager);
           default:
             return BugGamePage(level: level, scoreManager: scoreManager);
         }
@@ -51,6 +55,30 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String nickname = '';
   bool isKakaoLinked = false;
+
+  void _navigateToProfilePage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProfilePopupPage(
+          nickname: nickname,
+          isKakaoLinked: isKakaoLinked,
+          onKakaoLink: () {
+            setState(() {
+              isKakaoLinked = true;
+            });
+            Navigator.pop(context); // 카카오 연동 완료 후 뒤로 가기
+          },
+          onKakaoUnlink: () {
+            setState(() {
+              isKakaoLinked = false;
+            });
+            Navigator.pop(context); // 카카오 연결 해제 후 뒤로 가기
+          },
+        ),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -91,6 +119,7 @@ class _HomePageState extends State<HomePage> {
       // 카카오 사용자 정보 가져오기
       final user = await UserApi.instance.me();
       final kakaoId = user.id.toString();
+      final profileImageUrl = user.kakaoAccount?.profile?.profileImageUrl;
 
       // 서버로 카카오 연동 요청
       final apiUrl = dotenv.env['API_URL'] ?? 'http://localhost:3000';
@@ -100,6 +129,7 @@ class _HomePageState extends State<HomePage> {
         body: json.encode({
           'userId': userId,
           'kakaoId': kakaoId,
+          'profileImageUrl': profileImageUrl,
         }),
       );
 
@@ -175,7 +205,7 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return ProfilePopup(
+        return ProfilePopupPage(
           nickname: nickname,
           isKakaoLinked: isKakaoLinked,
           onKakaoLink: () => _linkKakao(context),
@@ -184,6 +214,7 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
 
 
 // class HomePage extends StatelessWidget {
@@ -211,8 +242,9 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
+
           Positioned(
-            top: 30,
+            top: 40,
             right: 70,
             child: GestureDetector(
               onTap: () => _showProfilePopup(context), // 프로필 팝업 표시
@@ -223,7 +255,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Positioned(
-            top: 30,
+            top: 40,
             right: 20,
             child: SvgPicture.asset(
               'assets/vectors/setting.svg',

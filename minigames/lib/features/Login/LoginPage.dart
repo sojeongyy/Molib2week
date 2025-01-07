@@ -23,11 +23,23 @@ class LoginPage extends StatelessWidget {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(height: 110),
+                  const SizedBox(height: 100),
                   Center(  // 텍스트도 가운데 정렬
                     child: Image.asset('assets/images/title.png', width: 300),
                   ),
-                  const SizedBox(height: 50),
+
+                  const SizedBox(height: 30), // 20만큼의 여백
+                  Text(
+                    'GONGDAE VERSION', // ✅ 추가된 부제목
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 24, // ✅ 작은 크기
+                      fontWeight: FontWeight.w500, // ✅ 중간 두께
+                      color: Colors.black87,
+                      fontFamily: 'cooper-bold-bt',
+                    ),
+                  ),
+                  const SizedBox(height: 40),
 
                   // 로그인 폼 (아이디/비밀번호 입력)
                   LoginForm(

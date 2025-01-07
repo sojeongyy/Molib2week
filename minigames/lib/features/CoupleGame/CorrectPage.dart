@@ -43,7 +43,7 @@ class _CorrectPageState extends State<CorrectPage> with SingleTickerProviderStat
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFE1FB),
+      backgroundColor: const Color(0xFFF47599),
       body: Stack(
         children: [
           // ✅ 중앙에 여자 캐릭터와 정답 캐릭터 배치

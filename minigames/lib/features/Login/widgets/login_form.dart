@@ -25,7 +25,11 @@ class LoginForm extends StatelessWidget {
               hintText: '아이디',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide(color: AppColors.hardBlue, width: 2),
+                borderSide: BorderSide(width: 2),
+              ),
+              focusedBorder: OutlineInputBorder( // 포커스 시 테두리 색상 변경
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide(width: 2, color: AppColors.customBlue),
               ),
             ),
           ),
@@ -42,12 +46,16 @@ class LoginForm extends StatelessWidget {
               hintText: '비밀번호',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide(color: AppColors.hardBlue, width: 2),
+                borderSide: BorderSide(width: 2),
+              ),
+              focusedBorder: OutlineInputBorder( // 포커스 시 테두리 색상 변경
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide(width: 2, color: AppColors.customBlue),
               ),
             ),
           ),
         ),
-        const SizedBox(height: 10),
+        //const SizedBox(height: 10),
 
         // 회원가입 및 비밀번호 찾기 텍스트
         Row(

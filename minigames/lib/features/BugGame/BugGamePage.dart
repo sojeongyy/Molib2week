@@ -114,7 +114,7 @@ class _BugGamePageState extends State<BugGamePage> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFDAFFFD),
+      backgroundColor: const Color(0xFF61E1B4),
       body: Stack( // ✅ Positioned를 사용하기 위해 Stack으로 변경
         children: [
           // ✅ 상단 타이머 프로그레스 바 (Stack의 첫 번째 요소)

@@ -49,15 +49,18 @@ class GameOverPage extends StatelessWidget {
           ),
 
           Positioned(
-            top: 30,
+            top: 40,
             right: 70,
-            child: SvgPicture.asset(
-              'assets/vectors/user.svg',
-              width: 40,
+            child: GestureDetector(
+              //onTap: () => _showProfilePopup(context), // 프로필 팝업 표시
+              child: SvgPicture.asset(
+                'assets/vectors/user.svg',
+                width: 40,
+              ),
             ),
           ),
           Positioned(
-            top: 30,
+            top: 40,
             right: 20,
             child: SvgPicture.asset(
               'assets/vectors/setting.svg',

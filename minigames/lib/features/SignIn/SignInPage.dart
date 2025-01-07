@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:minigames/core/colors.dart';
 import 'dart:convert';
 import 'package:minigames/features/Home/HomePage.dart';
+import 'package:minigames/features/SignIn/widgets/sign_in_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInPage extends StatefulWidget {
@@ -24,7 +26,10 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   late final TextEditingController _usernameController;
   late final TextEditingController _passwordController;
+  final TextEditingController _confirmPasswordController = TextEditingController();
   late final TextEditingController _nicknameController;
+
+  bool _isPasswordMismatch = false;
 
   @override
   void initState() {
@@ -51,6 +56,10 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Future<void> register() async {
+    setState(() {
+      _isPasswordMismatch = _passwordController.text != _confirmPasswordController.text;
+    });
+
     final apiUrl = dotenv.env['API_URL'] ?? 'http://localhost:3000';
     final registerUrl = widget.kakaoId != null
         ? Uri.parse('$apiUrl/auth/kakao/register') // 카카오 회원가입
@@ -132,8 +141,12 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('회원가입')),
-      body: Padding(
+      appBar: AppBar(
+          title: const Text('Sign Up'),
+          backgroundColor: AppColors.almostWhite,
+      ),
+      body: SingleChildScrollView(
+      child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -156,16 +169,33 @@ class _SignInPageState extends State<SignInPage> {
             ),
             const SizedBox(height: 10),
             TextField(
+              controller: _confirmPasswordController,
+              obscureText: true,
+              decoration: InputDecoration(labelText: '비밀번호 확인'),
+            ),
+            if (_isPasswordMismatch) // 비밀번호 불일치 시 경고 메시지 표시
+              const Padding(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Text(
+                  '비밀번호가 일치하지 않습니다.',
+                  style: TextStyle(color: Colors.red, fontSize: 14),
+                ),
+              ),
+            const SizedBox(height: 10),
+            TextField(
               controller: _nicknameController,
               decoration: const InputDecoration(labelText: '닉네임'),
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: register,
-              child: const Text('회원가입'),
-            ),
+            const SizedBox(height: 100),
+            // ElevatedButton(
+            //   onPressed: register,
+            //   child: const Text('회원가입'),
+            // ),
+
+            SignInButton(onPressed: register)
           ],
         ),
+      ),
       ),
     );
   }
