@@ -116,6 +116,7 @@ class _HomePageState extends State<HomePage> {
       // 카카오 사용자 정보 가져오기
       final user = await UserApi.instance.me();
       final kakaoId = user.id.toString();
+      final profileImageUrl = user.kakaoAccount?.profile?.profileImageUrl;
 
       // 서버로 카카오 연동 요청
       final apiUrl = dotenv.env['API_URL'] ?? 'http://localhost:3000';
@@ -125,6 +126,7 @@ class _HomePageState extends State<HomePage> {
         body: json.encode({
           'userId': userId,
           'kakaoId': kakaoId,
+          'profileImageUrl': profileImageUrl,
         }),
       );
 

@@ -43,7 +43,7 @@ class KakaoLoginButton extends StatelessWidget {
 
       // 서버로 로그인 요청
       final response = await http.post(
-        Uri.parse('$apiUrl/kakao/login'),
+        Uri.parse('$apiUrl/auth/kakao/login'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({'kakaoId': kakaoId.toString()}), // 로그인에 프로필 사진 전달하지 않음
       );
