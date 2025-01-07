@@ -10,14 +10,49 @@ import '../../core/colors.dart';
 
 final ScoreManager scoreManager = ScoreManager();
 
-class GameOverPage extends StatelessWidget {
+class GameOverPage extends StatefulWidget {
   final ScoreManager scoreManager;
 
   const GameOverPage({super.key, required this.scoreManager});
 
+  @override
+  State<GameOverPage> createState() => _GameOverPageState();
+}
+
+class _GameOverPageState extends State<GameOverPage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 애니메이션 컨트롤러 설정
+    _controller = AnimationController(
+      duration: const Duration(seconds: 5),
+      vsync: this,
+    )..repeat(); // 반복 애니메이션
+
+    _animation = Tween<double>(
+      begin: 1.0,
+      end: -1.0,
+    ).animate(_controller);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BackgroundMusicPage.play();
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   Future<void> shareScoreWithKakao(BuildContext context) async {
     try {
-      final score = scoreManager.score; // 현재 점수 가져오기
+      final score = widget.scoreManager.score; // 현재 점수 가져오기
 
       // 카카오 메시지 생성
       final TextTemplate defaultTex = TextTemplate(
@@ -49,41 +84,6 @@ class GameOverPage extends StatelessWidget {
   }
 
   @override
-  State<GameOverPage> createState() => _GameOverPageState();
-}
-
-class _GameOverPageState extends State<GameOverPage>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // ✅ 비행기 애니메이션 컨트롤러 설정
-    _controller = AnimationController(
-      duration: const Duration(seconds: 5), // 5초간 비행
-      vsync: this,
-    )..repeat(); // 반복 애니메이션
-
-    _animation = Tween<double>(
-      begin: 1.0, // 오른쪽 바깥 시작
-      end: -1.0,  // 왼쪽 바깥 끝
-    ).animate(_controller);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      BackgroundMusicPage.play();
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose(); // ✅ 메모리 누수 방지
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -95,25 +95,25 @@ class _GameOverPageState extends State<GameOverPage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Score(scoreManager: scoreManager),
+                  Score(scoreManager: widget.scoreManager),
                   const SizedBox(height: 30),
 
-                  // ✅ HOME & RETRY 버튼을 가로로 나란히 배치
+                  // HOME & RETRY 버튼
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const SizedBox(height: 60),
-                      Buttons(scoreManager: scoreManager),
+                      Buttons(scoreManager: widget.scoreManager),
                     ],
                   ),
 
                   const SizedBox(height: 30), // 버튼들 아래 간격 추가
-                  // ✅ SHARE 버튼
+                  // SHARE 버튼
                   DecoratedBox(
                     decoration: BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2), // ✅ 그림자 설정
+                          color: Colors.black.withOpacity(0.2),
                           offset: const Offset(0, 4),
                           spreadRadius: 2,
                         ),
@@ -123,17 +123,17 @@ class _GameOverPageState extends State<GameOverPage>
                     child: ElevatedButton(
                       onPressed: () => shareScoreWithKakao(context),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.customYellow, // 버튼 색상
+                        backgroundColor: AppColors.customYellow,
                         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                        elevation: 0, // 기본 Elevation 제거
+                        elevation: 0,
                       ),
                       child: const Text(
                         'SHARE',
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white, // 글씨 색상
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -142,11 +142,7 @@ class _GameOverPageState extends State<GameOverPage>
               ),
             ),
           ),
-                ],
-              ),
-            ),
-          ),
-          // ✅ 비행기 애니메이션 추가
+          // 비행기 애니메이션
           AnimatedBuilder(
             animation: _animation,
             builder: (context, child) {
