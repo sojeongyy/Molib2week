@@ -27,6 +27,7 @@ class LoginPage extends StatelessWidget {
                   Center(  // 텍스트도 가운데 정렬
                     child: Image.asset('assets/images/title.png', width: 300),
                   ),
+
                   const SizedBox(height: 30), // 20만큼의 여백
                   Text(
                     'GONGDAE VERSION', // ✅ 추가된 부제목
@@ -59,7 +60,6 @@ class LoginPage extends StatelessWidget {
                 ],
               ),
             ),
-
           ],
         ),
       ),

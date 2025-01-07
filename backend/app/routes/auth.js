@@ -134,7 +134,7 @@ router.post('/kakao/login', async (req, res) => {
 
 // 카카오 회원가입 API
 router.post('/kakao/register', async (req, res) => {
-  const { kakaoId, username, password, nickname } = req.body;
+  const { kakaoId, username, password, nickname, profileImageUrl } = req.body;
 
   if (!kakaoId || !username || !password || !nickname) {
     return res.status(400).json({ message: '모든 필드를 입력하세요.' });
@@ -157,10 +157,10 @@ router.post('/kakao/register', async (req, res) => {
     // 비밀번호 해싱
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 새로운 사용자 추가 (is_kakao_linked = TRUE)
+    // 새로운 사용자 추가 (is_kakao_linked = TRUE, 프로필 URL 추가)
     await connection.query(
-      `INSERT INTO users (kakao_id, username, password_hash, nickname, is_kakao_linked) VALUES (?, ?, ?, ?, TRUE)`,
-      [kakaoId, username, hashedPassword, nickname]
+      `INSERT INTO users (kakao_id, username, password_hash, nickname, is_kakao_linked, profile_image_url) VALUES (?, ?, ?, ?, TRUE, ?)`,
+      [kakaoId, username, hashedPassword, nickname, profileImageUrl || null]
     );
 
     connection.release();
@@ -173,7 +173,7 @@ router.post('/kakao/register', async (req, res) => {
 
 // 카카오 연동하기 API
 router.post('/kakao/link', async (req, res) => {
-  const { userId, kakaoId } = req.body;
+  const { userId, kakaoId, profileImageUrl } = req.body;
 
   if (!userId || !kakaoId) {
     return res.status(400).json({ message: '유저 ID와 카카오 ID를 입력하세요.' });
@@ -195,10 +195,23 @@ router.post('/kakao/link', async (req, res) => {
       });
     }
 
-    // 유저 데이터 업데이트
+    // 현재 사용자 프로필 이미지 확인
+    const [currentUser] = await connection.query(
+      `SELECT profile_image_url FROM users WHERE username = ?`,
+      [userId]
+    );
+
+    let finalProfileImageUrl = currentUser[0]?.profile_image_url;
+
+    // 기존 프로필 이미지가 없는 경우에만 카카오 프로필 이미지 사용
+    if (!finalProfileImageUrl || finalProfileImageUrl.trim() === '') {
+      finalProfileImageUrl = profileImageUrl || null; // 클라이언트에서 전달한 카카오 프로필 이미지
+    }
+
+    // 유저 데이터 업데이트 (프로필 URL 포함)
     await connection.query(
-      `UPDATE users SET kakao_id = ?, is_kakao_linked = TRUE WHERE username = ?`,
-      [kakaoId, userId]
+      `UPDATE users SET kakao_id = ?, is_kakao_linked = TRUE, profile_image_url = ? WHERE username = ?`,
+      [kakaoId, finalProfileImageUrl, userId]
     );
 
     connection.release();
