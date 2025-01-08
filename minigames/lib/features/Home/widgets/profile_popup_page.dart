@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/colors.dart';
 import 'cancel_button.dart';
 import 'kakao_button.dart';
+import 'logout_button.dart';
 
 class ProfilePopupPage extends StatefulWidget {
   final String nickname;
@@ -49,7 +50,7 @@ class _ProfilePopupPageState extends State<ProfilePopupPage> {
       child: ConstrainedBox(
         constraints: const BoxConstraints(
           maxWidth: 240, // 팝업 최대 너비 조정
-          maxHeight: 300, // 팝업 최대 높이 조정
+          maxHeight: 400, // 팝업 최대 높이 조정
         ),
         child: Stack(
           children: [
@@ -78,6 +79,8 @@ class _ProfilePopupPageState extends State<ProfilePopupPage> {
                       onKakaoLink: widget.onKakaoLink,
                       onKakaoUnlink: widget.onKakaoUnlink,
                     ),
+                    const SizedBox(height: 10),
+                    LogoutButton(),
                   ],
                 ),
               ),
