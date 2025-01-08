@@ -150,8 +150,6 @@
 > *LET’S DEBUG*
 > 
 
-![KakaoTalk_20250108_201322001 - frame at 1m43s.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/190c8a02-cf6c-461e-836d-b82c0cfe9c9a/KakaoTalk_20250108_201322001_-_frame_at_1m43s.jpg)
-
 - 컴퓨터에 붙어있는 BUG를 잡으세요!
 - BUG는 절대 한 마리가 아닙니다..
 - 뒤로 갈 수록 더욱 늘어납니다.
@@ -161,22 +159,18 @@
 - 기쁩니다.
 - Next 버튼으로 다음 라운드 이동!
 
-![KakaoTalk_20250108_201322001 - frame at 1m46s.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/fc9b0878-9840-4063-bf72-79da8f43ec30/KakaoTalk_20250108_201322001_-_frame_at_1m46s.jpg)
-
 ### If U Fail…
 
 - BUG에게 비웃음을 삽니다.
 - 게임 실패!
 - check your score 버튼 선택 시 게임 오버 화면으로
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/68bb135d-711e-4d1f-be10-d3a8b8be1ca4/image.png)
 
 ## Game 4 - 어! 금지
 
 > *개발자 3대 금지어*
 > 
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/52c8c0eb-523a-406e-a665-3bb2bf23675e/image.png)
 
 - 어! 말풍선을 선택해 입을 막으세요.
 - 다른 말풍선을 선택하면 바로 게임오버..
@@ -188,7 +182,6 @@
 - ~~저 더 이상 아무것도 무섭지 않아요~~
 - Next 버튼으로 다음 라운드 이동!
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/b7aca596-3361-4a74-abe0-01270b6b536a/image.png)
 
 ### If U Fail…
 
@@ -196,15 +189,8 @@
 - 게임 실패!
 - check your score 버튼 선택 시 게임 오버 화면으로
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/fb11ac42-1702-415a-add2-f03228599731/image.png)
 
 ## Game Over 페이지
-
-![KakaoTalk_20250108_201322001 - frame at 2m0s.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/d0be00e9-a79a-4d83-a096-c91794b2d309/KakaoTalk_20250108_201322001_-_frame_at_2m0s.jpg)
-
-![KakaoTalk_20250108_201322001 - frame at 1m19s.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/ae403a94-e6cf-4640-9b7b-7cfb90698ef2/KakaoTalk_20250108_201322001_-_frame_at_1m19s.jpg)
-
-![KakaoTalk_20250108_201322001 - frame at 1m15s.jpg](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/6a54644f-8a35-4790-b360-ca7e01ad0d04/KakaoTalk_20250108_201322001_-_frame_at_1m15s.jpg)
 
 - 최종 점수를 확인할 수 있어요.
 - 다시 홈으로 돌아가거나
@@ -212,3 +198,5 @@
 - share 버튼을 누르면 카톡으로 친구에게 자신의 점수를 공유할 수 있어요!
 
 # APK
+
+[Download APK]([https://www.notion.so/05f7a77d40ef42b0aa2125eb14255002?pvs=21](https://drive.google.com/file/d/13KUj_pGrQwHOEVva77kRr3pvn2GDwXJE/view))
