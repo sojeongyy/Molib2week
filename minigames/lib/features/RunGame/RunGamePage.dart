@@ -38,7 +38,7 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
     super.initState();
     BackgroundMusicPage.play(assetPath: 'audios/heart.wav');
 
-    speed += widget.level * 25;
+    speed += widget.level * 35;
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 16),

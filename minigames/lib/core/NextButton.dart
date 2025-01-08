@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minigames/features/Home/HomePage.dart';
 import '../../../core/colors.dart';
+import 'BackgroundMusicManager.dart';
 
 class NextButton extends StatelessWidget {
   final int level;
@@ -26,6 +27,7 @@ class NextButton extends StatelessWidget {
           ),
           child: ElevatedButton(
             onPressed: () {
+              BackgroundMusicPage.stop();
               print("Next 버튼 클릭");
               print(level);
               startRandomGame(context, 1, level + 1);

@@ -36,9 +36,6 @@ class _BugGamePageState extends State<BugGamePage> with SingleTickerProviderStat
       duration: const Duration(milliseconds: 500),
     );
 
-    // ✅ 난이도에 따라 타이머와 벌레 수 조정
-    gameDuration -= widget.level;
-    if (gameDuration < 2) gameDuration = 2; // 최소 제한 시간 2초
     _generateBugPositions();
 
     // ✅ TimerManager 초기화

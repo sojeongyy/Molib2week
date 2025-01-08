@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,20 +11,25 @@ import '../../core/ScoreManager.dart';
 import '../BugGame/BugGamePage.dart';
 import '../UhWordGame/UhGamePage.dart';
 import 'widgets/scoreboard.dart';
-import '../GameOver/widgets/score.dart';
-import '../../core/ScoreManager.dart';
 import 'widgets/background_image.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'widgets/profilePopup.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../RunGame/RunGamePage.dart';
 import '../CoupleGame/CoupleGamePage.dart';
 
 final ScoreManager scoreManager = ScoreManager();
+int? lastGameIndex;
 
 // ✅ 게임을 성공 후 RoundPage를 거쳐 랜덤 게임 시작 (mounted 체크 추가)
 void startRandomGame(BuildContext context, int roundNumber, int level) {
-  final randomIndex = Random().nextInt(4); // ✅ 3개의 게임을 랜덤으로 선택 (0, 1, 2)
+  //final randomIndex = Random().nextInt(4); // ✅ 3개의 게임을 랜덤으로 선택 (0, 1, 2)
+  int randomIndex;
+
+  do {
+    randomIndex = Random().nextInt(4);
+  } while (randomIndex == lastGameIndex);
+
+  lastGameIndex = randomIndex;
 
   // ✅ 기존 페이지를 닫고 랜덤으로 새로운 게임 시작
   Navigator.pushReplacement(
