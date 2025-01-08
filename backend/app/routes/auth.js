@@ -258,9 +258,11 @@ router.post('/kakao/unlink', async (req, res) => {
 
     // 유저 데이터 초기화
     await connection.query(
-      `UPDATE users SET kakao_id = NULL, is_kakao_linked = FALSE WHERE username = ?`,
-      [userId]
-    );
+          `UPDATE users
+           SET kakao_id = NULL, is_kakao_linked = FALSE, profile_image_url = NULL
+           WHERE username = ?`,
+          [userId]
+        );
 
     // 업데이트된 사용자 정보 가져오기
     const [updatedUser] = await connection.query(

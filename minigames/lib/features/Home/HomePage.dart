@@ -192,6 +192,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         // SharedPreferences 업데이트
         final prefs = await SharedPreferences.getInstance();
         prefs.setBool('isKakaoLinked', false);
+        prefs.setString('profileImageUrl', '');
       } else {
         final error = json.decode(response.body)['message'];
         ScaffoldMessenger.of(context).showSnackBar(
