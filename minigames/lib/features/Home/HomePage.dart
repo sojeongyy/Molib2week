@@ -1,5 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/services.dart'; // SystemNavigator 사용을 위한 import
 import 'dart:math';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:minigames/core/BackgroundMusicManager.dart';
@@ -20,6 +22,7 @@ import 'widgets/profilePopup.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../RunGame/RunGamePage.dart';
 import '../CoupleGame/CoupleGamePage.dart';
+import '../../../core/colors.dart';
 
 final ScoreManager scoreManager = ScoreManager();
 
@@ -61,6 +64,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   bool isKakaoLinked = false;
   late AnimationController _controller;
   late Animation<double> _animation;
+  DateTime? lastPressed;
+  bool canPopNow = false;
 
   //final AudioPlayer _pageAudioPlayer = AudioPlayer();
 
@@ -224,63 +229,90 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 // class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          BackgroundImage(),
-          SafeArea(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Scoreboard(),
-                  const SizedBox(height: 50),
-                  PlayButton(
-                    onPressed: () {
-                      startRandomGame(context, 1, 1);
-                      BackgroundMusicPage.stop();
-                    },
-                    scoreManager: scoreManager, // ✅ 점수 매니저 전달
-                  ),
-                ],
+    return PopScope(
+      canPop: canPopNow,
+      onPopInvokedWithResult: (bool didPop, dynamic result) async {
+        final now = DateTime.now();
+        const duration = Duration(seconds: 2);
+
+        if (lastPressed == null || now.difference(lastPressed!) > duration) {
+          print("뒤로가기 처음");
+          lastPressed = now;
+          setState(() {
+            canPopNow = false;
+          });
+          Fluttertoast.showToast(
+            msg: "뒤로가기를 한 번 더 누르면 앱이 종료됩니다.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+          );
+        } else {
+          // 앱 종료
+          print("앱 종료");
+          lastPressed = null;
+          setState(() {
+            canPopNow = true;
+          });
+          await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+        }
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            BackgroundImage(),
+            SafeArea(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Scoreboard(),
+                    const SizedBox(height: 50),
+                    PlayButton(
+                      onPressed: () {
+                        startRandomGame(context, 1, 1);
+                        BackgroundMusicPage.stop();
+                      },
+                      scoreManager: scoreManager,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          // ✅ 비행기 애니메이션 추가
-          AnimatedBuilder(
-            animation: _animation,
-            builder: (context, child) {
-              return Positioned(
-                top: 110, // ✅ 스코어보드 바로 위쪽
-                left: MediaQuery.of(context).size.width * _animation.value, // 오른쪽에서 왼쪽으로
-                child: Image.asset(
-                  'assets/images/plane.png',
-                  width: 300,
+            AnimatedBuilder(
+              animation: _animation,
+              builder: (context, child) {
+                return Positioned(
+                  top: 110,
+                  left: MediaQuery.of(context).size.width * _animation.value,
+                  child: Image.asset(
+                    'assets/images/plane.png',
+                    width: 300,
+                  ),
+                );
+              },
+            ),
+            Positioned(
+              top: 40,
+              right: 70,
+              child: GestureDetector(
+                onTap: () => _showProfilePopup(context),
+                child: SvgPicture.asset(
+                  'assets/vectors/user.svg',
+                  width: 40,
                 ),
-              );
-            },
-          ),
-          Positioned(
-            top: 40,
-            right: 70,
-            child: GestureDetector(
-              onTap: () => _showProfilePopup(context), // 프로필 팝업 표시
+              ),
+            ),
+            Positioned(
+              top: 40,
+              right: 20,
               child: SvgPicture.asset(
-                'assets/vectors/user.svg',
+                'assets/vectors/setting.svg',
                 width: 40,
               ),
             ),
-          ),
-          Positioned(
-            top: 40,
-            right: 20,
-            child: SvgPicture.asset(
-              'assets/vectors/setting.svg',
-              width: 40,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

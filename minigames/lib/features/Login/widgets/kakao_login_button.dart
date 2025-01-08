@@ -17,6 +17,7 @@ class KakaoLoginButton extends StatelessWidget {
     await prefs.setBool('isKakaoLinked', isKakaoLinked);
     await prefs.setString('profileImageUrl', profileImageUrl);
     await prefs.setInt('id', id);
+    await prefs.setBool('isKeepLoggedIn', true);
   }
 
   Future<void> _loginWithKakao(BuildContext context) async {
