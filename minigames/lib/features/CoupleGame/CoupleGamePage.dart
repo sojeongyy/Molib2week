@@ -141,7 +141,23 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
                     }
                   },
                   builder: (context, candidateData, rejectedData) {
-                    return Image.asset('assets/images/pink_person.png', width: 150);
+                    return Column(
+                        children: [
+                        Image.asset('assets/images/pink_person.png', width: 150),
+
+                        const SizedBox(height: 20),
+
+                    // ✅ 여기에 텍스트 추가
+                        const Text(
+                          "그녀의 이상형을 찾아줘",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    );
                   },
                 ),
               ],
