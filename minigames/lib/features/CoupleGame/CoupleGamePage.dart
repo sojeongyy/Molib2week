@@ -20,7 +20,7 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
   String speechBubbleImage = 'assets/images/green_think.png';
   late TimerManager timerManager;
   late AnimationController _controller;
-  int gameDuration = 5;
+  int gameDuration = 7;
   bool isGameOver = true;
 
   @override
@@ -37,7 +37,7 @@ class _CoupleGamePageState extends State<CoupleGamePage> with SingleTickerProvid
 
     // ✅ 난이도에 따라 제한 시간 조정
     gameDuration -= widget.level * 1;
-    if (gameDuration < 1) gameDuration = 1; // 최소 1초 제한
+    if (gameDuration < 2) gameDuration = 2; // 최소 1초 제한
 
     timerManager = TimerManager(
       context: context,

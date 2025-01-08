@@ -19,8 +19,8 @@ class BugGamePage extends StatefulWidget {
 class _BugGamePageState extends State<BugGamePage> with SingleTickerProviderStateMixin {
   List<Offset> bugPositions = [];
   List<bool> bugCaught = [];
-  final int bugImageSize = 25;
-  final double computerImageWidth = 400;
+  final int bugImageSize = 40;
+  final double computerImageWidth = 300;
   final double computerImageHeight = 300;
   late TimerManager timerManager;
   late AnimationController _controller;
@@ -76,20 +76,27 @@ class _BugGamePageState extends State<BugGamePage> with SingleTickerProviderStat
 
   void _generateBugPositions() {
     bugPositions.clear();
-    final int bugCount = widget.level + 2; // 난이도에 따라 벌레 수 증가
+
+    // 버그 개수 제한: 6
+    final int bugCount = min(widget.level + 1, 6);
+
     final Random random = Random();
 
     for (int i = 0; i < bugCount; i++) {
-      double x = random.nextDouble() * (computerImageWidth - bugImageSize);
-      double y = random.nextDouble() * (computerImageHeight - bugImageSize);
+      // double x = random.nextDouble() * (computerImageWidth - bugImageSize);
+      // double y = random.nextDouble() * (computerImageHeight - bugImageSize);
+      double x = random.nextDouble() * (computerImageWidth - bugImageSize * 2) + bugImageSize;
+      double y = random.nextDouble() * (computerImageHeight - bugImageSize * 2) + bugImageSize;
 
       // ✅ 벌레가 화면 밖으로 나가지 않도록 제한
-      if (x + bugImageSize > computerImageWidth) {
-        x = computerImageWidth - bugImageSize;
-      }
-      if (y + bugImageSize > computerImageHeight) {
-        y = computerImageHeight - bugImageSize;
-      }
+      // if (x + bugImageSize > computerImageWidth) {
+      //   x = computerImageWidth - bugImageSize;
+      // }
+      // if (y + bugImageSize > computerImageHeight) {
+      //   y = computerImageHeight - bugImageSize;
+      // }
+      x = max(0, min(x, computerImageWidth - bugImageSize));
+      y = max(0, min(y, computerImageHeight - bugImageSize));
 
       bugPositions.add(Offset(x, y));
       bugCaught.add(false); // 벌레를 아직 잡지 않은 상태로 초기화

@@ -19,8 +19,8 @@ class RunGamePage extends StatefulWidget {
 }
 
 class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStateMixin {
-  double professorX = 100;
-  double professorY = 100;
+  double professorX = 200;
+  double professorY = 50;
   double playerX = 200;
   double playerY = 400;
   final double blue_person_width = 100;
@@ -28,8 +28,8 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
   bool isGameOver = false;
   late AnimationController _controller;
   late TimerManager timerManager;
-  double speed = 300;
-  int gameDuration = 5;
+  double speed = 200;
+  int gameDuration = 4;
   late Future<void> _delayedTransition; // ✅ 추가
   bool _isDisposed = false; // ✅ 추가
 
@@ -38,7 +38,7 @@ class _RunGamePageState extends State<RunGamePage> with SingleTickerProviderStat
     super.initState();
     BackgroundMusicPage.play(assetPath: 'audios/heart.wav');
 
-    speed += widget.level * 50;
+    speed += widget.level * 25;
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 16),
